@@ -1,0 +1,2680 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Care & Cure IVF — Clinical Management</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --teal: #005f73; --teal2: #0a9396; --teal3: #94d2bd; --teal4: #e9f5f3;
+  --amber: #ca6702; --amber2: #ee9b00; --amber3: #ffd60a; --amber4: #fff3cd;
+  --rose: #ae2012; --rose2: #bb3e03; --rose4: #fdecea;
+  --sage: #2e7d32; --sage2: #4caf50; --sage4: #e8f5e9;
+  --ink: #1a1a2e; --ink2: #2d3748; --ink3: #4a5568; --ink4: #718096;
+  --surface: #f8fafb; --white: #ffffff;
+  --stim: #6a1b9a; --stiml: #f3e5f5;
+  --etprep: #01579b; --etprepl: #e1f5fe;
+  --radius: 10px; --shadow: 0 2px 16px rgba(0,95,115,0.10);
+  --font: 'DM Sans', sans-serif; --mono: 'DM Mono', monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{font-size:14px}
+body{font-family:var(--font);background:var(--surface);color:var(--ink);min-height:100vh}
+
+/* ── TOP BAR ── */
+.topbar{background:var(--teal);padding:0 24px;display:flex;align-items:center;gap:16px;height:54px;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(0,95,115,0.3)}
+.topbar-logo{font-family:'Playfair Display',serif;color:#fff;font-size:1.15rem;font-weight:700;letter-spacing:.5px;white-space:nowrap}
+.topbar-logo span{color:var(--amber3);font-weight:400}
+.topbar-nav{display:flex;gap:2px;flex:1;overflow-x:auto;scrollbar-width:none}
+.topbar-nav::-webkit-scrollbar{display:none}
+.nav-btn{background:none;border:none;color:rgba(255,255,255,0.7);font-family:var(--font);font-size:.78rem;font-weight:500;padding:6px 12px;border-radius:6px;cursor:pointer;white-space:nowrap;transition:all .15s;letter-spacing:.3px}
+.nav-btn:hover{background:rgba(255,255,255,0.12);color:#fff}
+.nav-btn.active{background:rgba(255,255,255,0.18);color:#fff;font-weight:600}
+.topbar-date{font-family:var(--mono);font-size:.72rem;color:rgba(255,255,255,0.6);white-space:nowrap;margin-left:auto}
+
+/* ── LAYOUT ── */
+.page{display:none;padding:20px 24px;max-width:1600px;margin:0 auto}
+.page.active{display:block}
+
+/* ── DAILY DASHBOARD ── */
+.dash-header{margin-bottom:20px}
+.dash-title{font-family:'Playfair Display',serif;font-size:1.5rem;color:var(--teal);font-weight:700}
+.dash-date{font-size:.82rem;color:var(--ink4);margin-top:2px}
+
+.phase-strip{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin-bottom:20px}
+.phase-card{background:var(--white);border-radius:var(--radius);padding:14px 16px;border-top:3px solid transparent;box-shadow:var(--shadow);cursor:default;transition:transform .15s}
+.phase-card:hover{transform:translateY(-2px)}
+.phase-card .pc-count{font-size:2rem;font-weight:700;line-height:1;margin-bottom:4px}
+.phase-card .pc-label{font-size:.72rem;font-weight:600;letter-spacing:.5px;text-transform:uppercase;opacity:.75}
+.phase-stim{border-color:var(--stim)}.phase-stim .pc-count{color:var(--stim)}
+.phase-etprep{border-color:var(--etprep)}.phase-etprep .pc-count{color:var(--etprep)}
+.phase-opu{border-color:#006064}.phase-opu .pc-count{color:#006064}
+.phase-et{border-color:var(--sage)}.phase-et .pc-count{color:var(--sage)}
+.phase-beta{border-color:var(--amber)}.phase-beta .pc-count{color:var(--amber)}
+.phase-cancel{border-color:var(--rose)}.phase-cancel .pc-count{color:var(--rose)}
+
+.dash-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.dash-section{background:var(--white);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}
+.ds-head{padding:12px 16px;font-weight:600;font-size:.82rem;letter-spacing:.5px;text-transform:uppercase;display:flex;align-items:center;gap:8px}
+.ds-body{padding:0}
+
+/* ── TABLES ── */
+.tbl-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:.82rem}
+thead th{background:var(--teal);color:#fff;padding:9px 12px;text-align:left;font-weight:600;font-size:.75rem;letter-spacing:.4px;white-space:nowrap;position:sticky;top:0}
+tbody tr{border-bottom:1px solid #edf2f7;transition:background .1s}
+tbody tr:hover{background:#f0f7f6}
+tbody td{padding:9px 12px;vertical-align:middle}
+.tbl-empty{text-align:center;color:var(--ink4);padding:32px;font-size:.85rem;font-style:italic}
+
+/* ── STATUS BADGES ── */
+.badge{display:inline-block;padding:2px 8px;border-radius:20px;font-size:.7rem;font-weight:600;letter-spacing:.3px;text-transform:uppercase;white-space:nowrap}
+.badge-ongoing{background:#fff3e0;color:#e65100}
+.badge-planned{background:#e3f2fd;color:#0d47a1}
+.badge-completed{background:var(--sage4);color:var(--sage)}
+.badge-cancelled{background:var(--rose4);color:var(--rose)}
+.badge-positive{background:var(--sage4);color:var(--sage)}
+.badge-negative{background:var(--rose4);color:var(--rose)}
+.badge-borderline{background:var(--amber4);color:var(--amber)}
+.badge-ongoing-preg{background:#e8f5e9;color:#2e7d32}
+.badge-storage{background:var(--stiml);color:var(--stim)}
+
+/* ── FORMS ── */
+.form-page{max-width:900px}
+.form-section{background:var(--white);border-radius:var(--radius);box-shadow:var(--shadow);margin-bottom:16px;overflow:hidden}
+.fs-head{background:var(--teal);color:#fff;padding:12px 18px;font-weight:600;font-size:.85rem;letter-spacing:.4px;display:flex;align-items:center;gap:8px}
+.fs-body{padding:18px;display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px}
+.fs-body.wide{grid-template-columns:repeat(auto-fill,minmax(260px,1fr))}
+.field{display:flex;flex-direction:column;gap:5px}
+.field label{font-size:.75rem;font-weight:600;color:var(--ink3);letter-spacing:.3px;text-transform:uppercase}
+.field input,.field select,.field textarea{border:1.5px solid #e2e8f0;border-radius:7px;padding:8px 10px;font-family:var(--font);font-size:.85rem;color:var(--ink);background:var(--white);transition:border-color .15s;outline:none}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--teal2)}
+.field select{cursor:pointer}
+.field textarea{resize:vertical;min-height:64px}
+.field.auto input,.field.auto select{background:#f0fafb;border-color:#94d2bd;color:var(--teal);font-style:italic}
+.field.highlight input,.field.highlight select{background:var(--amber4);border-color:var(--amber2)}
+
+/* ── BUTTONS ── */
+.btn{display:inline-flex;align-items:center;gap:6px;padding:9px 18px;border-radius:7px;font-family:var(--font);font-size:.82rem;font-weight:600;cursor:pointer;border:none;transition:all .15s;letter-spacing:.3px}
+.btn-primary{background:var(--teal);color:#fff}.btn-primary:hover{background:var(--teal2)}
+.btn-secondary{background:var(--white);color:var(--teal);border:1.5px solid var(--teal)}.btn-secondary:hover{background:var(--teal4)}
+.btn-danger{background:var(--rose);color:#fff}.btn-danger:hover{background:var(--rose2)}
+.btn-amber{background:var(--amber);color:#fff}.btn-amber:hover{background:var(--rose2)}
+.btn-sm{padding:5px 12px;font-size:.75rem}
+.btn-icon{padding:6px 10px;font-size:.85rem}
+
+.form-actions{display:flex;gap:10px;padding:16px 18px;border-top:1px solid #edf2f7;background:#fafbfc}
+
+/* ── PAGE HEADER ── */
+.page-hdr{display:flex;align-items:center;gap:12px;margin-bottom:18px;flex-wrap:wrap}
+.page-hdr h2{font-family:'Playfair Display',serif;font-size:1.3rem;color:var(--teal);font-weight:700;flex:1}
+.page-hdr-actions{display:flex;gap:8px;flex-wrap:wrap}
+
+/* ── ALERT ROWS ── */
+.alert-row{background:var(--rose4);border-left:3px solid var(--rose)}
+.alert-amber{background:var(--amber4);border-left:3px solid var(--amber2)}
+.alert-green{background:var(--sage4);border-left:3px solid var(--sage)}
+
+/* ── MODAL ── */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(26,26,46,0.55);z-index:200;align-items:center;justify-content:center;padding:20px}
+.modal-overlay.open{display:flex}
+.modal{background:var(--white);border-radius:14px;width:100%;max-width:720px;max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,0.2)}
+.modal-head{display:flex;align-items:center;justify-content:space-between;padding:18px 22px;border-bottom:1px solid #edf2f7;position:sticky;top:0;background:var(--white);z-index:1}
+.modal-head h3{font-family:'Playfair Display',serif;font-size:1.1rem;color:var(--teal)}
+.modal-close{background:none;border:none;font-size:1.3rem;cursor:pointer;color:var(--ink4);padding:4px 8px;border-radius:4px}.modal-close:hover{background:#f0f0f0}
+.modal-body{padding:22px}
+.modal-footer{padding:16px 22px;border-top:1px solid #edf2f7;display:flex;gap:10px;justify-content:flex-end;background:#fafbfc}
+
+/* ── TOAST ── */
+.toast-container{position:fixed;bottom:24px;right:24px;z-index:300;display:flex;flex-direction:column;gap:8px}
+.toast{background:var(--ink);color:#fff;padding:10px 18px;border-radius:8px;font-size:.82rem;font-weight:500;opacity:0;transform:translateY(8px);transition:all .25s;max-width:320px}
+.toast.show{opacity:1;transform:none}
+.toast.success{background:var(--sage)}
+.toast.error{background:var(--rose)}
+.toast.info{background:var(--teal)}
+
+/* ── EXPORT BAR ── */
+.export-bar{display:flex;gap:8px;align-items:center;padding:10px 0;border-bottom:1px solid #edf2f7;margin-bottom:14px;flex-wrap:wrap}
+.export-bar span{font-size:.75rem;color:var(--ink4);font-weight:500;text-transform:uppercase;letter-spacing:.4px}
+
+/* ── SEARCH / FILTER ── */
+.filter-bar{display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap;align-items:center}
+.filter-bar input,.filter-bar select{border:1.5px solid #e2e8f0;border-radius:7px;padding:7px 10px;font-family:var(--font);font-size:.82rem;outline:none;transition:border-color .15s;background:var(--white)}
+.filter-bar input:focus,.filter-bar select:focus{border-color:var(--teal2)}
+.filter-bar input{min-width:220px}
+
+/* ── RESPONSIVE ── */
+@media(max-width:900px){
+  .dash-grid{grid-template-columns:1fr}
+  .phase-strip{grid-template-columns:repeat(3,1fr)}
+  .fs-body{grid-template-columns:1fr 1fr}
+}
+@media(max-width:600px){
+  .phase-strip{grid-template-columns:repeat(2,1fr)}
+  .fs-body{grid-template-columns:1fr}
+  .topbar-logo{font-size:.95rem}
+  .page{padding:12px}
+}
+
+/* ── MISC ── */
+.chip{display:inline-block;padding:2px 8px;border-radius:4px;font-size:.72rem;font-weight:600;background:var(--teal4);color:var(--teal);margin:1px}
+.divider{height:1px;background:#edf2f7;margin:14px 0}
+.text-muted{color:var(--ink4);font-size:.78rem}
+.text-red{color:var(--rose);font-weight:600}
+.text-green{color:var(--sage);font-weight:600}
+.text-amber{color:var(--amber);font-weight:600}
+.text-teal{color:var(--teal);font-weight:600}
+.fw600{font-weight:600}
+.full-width{grid-column:1/-1}
+.notice{background:var(--teal4);border:1px solid var(--teal3);border-radius:8px;padding:12px 16px;font-size:.82rem;color:var(--teal);margin-bottom:16px;line-height:1.6}
+.notice strong{font-weight:700}
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <div class="topbar-logo">Care <span>&</span> Cure <span style="color:rgba(255,255,255,0.5);font-weight:300">|</span> IVF</div>
+  <nav class="topbar-nav">
+    <button class="nav-btn active" onclick="showPage('dashboard')">📊 Dashboard</button>
+    <button class="nav-btn" onclick="showPage('patients')">👤 Patients</button>
+    <button class="nav-btn" onclick="showPage('cycles')">🔬 Cycle Log</button>
+    <button class="nav-btn" onclick="showPage('tracker')">📋 Cycle Tracker</button>
+    <button class="nav-btn" onclick="showPage('schedule')">📅 Daily</button>
+    <button class="nav-btn" onclick="showPage('payments')">💰 Payments</button>
+    <button class="nav-btn" onclick="showPage('embryo')">🧊 Embryo Storage</button>
+    <button class="nav-btn" onclick="showPage('obstetric')">🤰 Obstetric</button>
+    <button class="nav-btn" onclick="showPage('reports')">📈 Reports</button>
+    <button class="nav-btn" onclick="showPage('donors')">🥚 Egg Donors</button>
+    <button class="nav-btn" onclick="showPage('imgserver')">🖼 Image Server</button>
+    <button class="nav-btn" onclick="showPage('expenses')">🧾 Expenses</button>
+    <button class="nav-btn" onclick="showPage('backup')" style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.25)">&#128190; Backup</button>
+  </nav>
+  <div class="topbar-date" id="topbarDate"></div>
+</div>
+
+<div class="toast-container" id="toastContainer"></div>
+
+<!-- Loading Overlay -->
+<div id="gsLoadingOverlay" style="display:flex;position:fixed;inset:0;background:rgba(0,95,115,0.82);z-index:999;align-items:center;justify-content:center;flex-direction:column;gap:16px">
+  <div style="width:48px;height:48px;border:4px solid rgba(255,255,255,0.3);border-top-color:#fff;border-radius:50%;animation:spin 0.8s linear infinite"></div>
+  <div id="gsLoadingMsg" style="color:#fff;font-family:'DM Sans',sans-serif;font-size:1rem;font-weight:500;letter-spacing:.3px">Loading from Google Sheets…</div>
+  <style>@keyframes spin{to{transform:rotate(360deg)}}</style>
+</div>
+
+<!-- Setup Banner -->
+<div id="gsSetupBanner" style="background:#fff3cd;border-bottom:2px solid #ca6702;padding:10px 24px;font-size:.82rem;color:#7a4100;font-family:'DM Sans',sans-serif;display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+  <strong>⚙️ Setup Required:</strong> Open this HTML file in a text editor and replace <code style="background:#ffe0b2;padding:2px 6px;border-radius:4px">YOUR_APPS_SCRIPT_URL_HERE</code> with your Google Apps Script URL.
+  <button onclick="document.getElementById('gsSetupBanner').style.display='none'" style="margin-left:auto;background:none;border:1px solid #ca6702;color:#ca6702;padding:4px 10px;border-radius:5px;cursor:pointer;font-size:.75rem">Dismiss</button>
+</div>
+
+<!-- ══════════════════════════════════════════════ DASHBOARD ══ -->
+<div class="page active" id="page-dashboard">
+  <div class="dash-header">
+    <div class="dash-title">Good <span id="greetTime"></span>, Care & Cure</div>
+    <div class="dash-date" id="dashDate"></div>
+  </div>
+  <div class="phase-strip" id="phaseStrip"></div>
+  <div class="dash-grid">
+    <div class="dash-section">
+      <div class="ds-head" style="background:var(--rose)">⚠️ Today's Procedures</div>
+      <div class="ds-body"><div class="tbl-wrap"><table id="dashTodayTable"><thead><tr><th>Patient</th><th>Procedure</th><th>Time</th><th>Status</th></tr></thead><tbody></tbody></table></div></div>
+    </div>
+    <div class="dash-section">
+      <div class="ds-head" style="background:#BF360C">🧪 Beta hCG Due Today</div>
+      <div class="ds-body"><div class="tbl-wrap"><table id="dashBetaTable"><thead><tr><th>Patient</th><th>ET Date</th><th>Cycle</th></tr></thead><tbody></tbody></table></div></div>
+    </div>
+    <div class="dash-section">
+      <div class="ds-head" style="background:var(--stim)">🟣 In Stimulation Phase</div>
+      <div class="ds-body"><div class="tbl-wrap"><table id="dashStimTable"><thead><tr><th>Patient</th><th>Stim Start</th><th>Day</th></tr></thead><tbody></tbody></table></div></div>
+    </div>
+    <div class="dash-section">
+      <div class="ds-head" style="background:var(--etprep)">🔵 In ET Prep Phase</div>
+      <div class="ds-body"><div class="tbl-wrap"><table id="dashEtprepTable"><thead><tr><th>Patient</th><th>Prep Start</th><th>Day</th></tr></thead><tbody></tbody></table></div></div>
+    </div>
+    <div class="dash-section">
+      <div class="ds-head" style="background:var(--teal)">💰 Payment Dues</div>
+      <div class="ds-body"><div class="tbl-wrap"><table id="dashPayTable"><thead><tr><th>Patient</th><th>Package</th><th>Paid</th><th>Due</th></tr></thead><tbody></tbody></table></div></div>
+    </div>
+    <div class="dash-section">
+      <div class="ds-head" style="background:var(--sage)">🤰 Obstetric Follow-up Due</div>
+      <div class="ds-body"><div class="tbl-wrap"><table id="dashObsTable"><thead><tr><th>Patient</th><th>GA</th><th>Last Visit</th></tr></thead><tbody></tbody></table></div></div>
+    </div>
+    <div class="dash-section" style="grid-column:1/-1">
+      <div class="ds-head" style="background:var(--stim)">🧊 Embryo Storage Renewals (≤30 days)</div>
+      <div class="ds-body"><div class="tbl-wrap"><table id="dashStorageTable"><thead><tr><th>Patient</th><th>Embryos</th><th>Vial Location</th><th>Renewal Date</th><th>Days Left</th><th>Fee Due</th></tr></thead><tbody></tbody></table></div></div>
+    </div>
+    <div class="dash-section">
+      <div class="ds-head" style="background:#bf360c">⏰ Overdue Patient & Cycle Visits</div>
+      <div class="ds-body"><div class="tbl-wrap"><table id="dashOverdueVisitsTable"><thead><tr><th>Patient</th><th>Section</th><th>Next Visit Was</th><th>Days Overdue</th></tr></thead><tbody></tbody></table></div></div>
+    </div>
+    <div class="dash-section">
+      <div class="ds-head" style="background:var(--sage)">📅 Upcoming Visits (Next 7 Days)</div>
+      <div class="ds-body"><div class="tbl-wrap"><table id="dashUpcomingVisitsTable"><thead><tr><th>Patient</th><th>Section</th><th>Next Visit</th><th>Days Away</th></tr></thead><tbody></tbody></table></div></div>
+    </div>
+    <div class="dash-section" style="grid-column:1/-1">
+      <div class="ds-head" style="background:var(--rose)">🚨 Lost Patients — No Activity for &gt;2 Months</div>
+      <div class="ds-body"><div class="tbl-wrap"><table id="dashLostPatientsTable"><thead><tr><th>Patient</th><th>Mobile</th><th>Last Activity</th><th>Days Since</th><th>Last Seen In</th></tr></thead><tbody></tbody></table></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════ PATIENTS ══ -->
+<div class="page" id="page-patients">
+  <div class="page-hdr">
+    <h2>Patient Register</h2>
+    <div class="page-hdr-actions">
+      <button class="btn btn-primary" onclick="openModal('modalPatient','New Patient')">+ New Patient</button>
+      <button class="btn btn-secondary btn-sm" onclick="exportCSV('patients')">⬇ CSV</button>
+      <button class="btn btn-secondary btn-sm" onclick="exportExcel('patients')">⬇ Excel</button>
+      <button class="btn btn-secondary btn-sm" onclick="exportGoogleSheets('patients')">📤 Google Sheets</button>
+    </div>
+  </div>
+  <div class="filter-bar">
+    <input type="text" id="patSearch" placeholder="Search by name or ID…" oninput="renderPatients()">
+  </div>
+  <div class="tbl-wrap">
+    <table id="patTable"><thead><tr><th>ID</th><th>Name</th><th>Mobile</th><th>Blood Grp (F/M)</th><th>Hb</th><th>HIV/HBsAg/HCV (F)</th><th>AMH</th><th>Sperm Count</th><th>Motility %</th><th>Semen Freezing</th><th>Reg. Date</th><th>Last Visit</th><th>Next Visit</th><th></th></tr></thead><tbody></tbody></table>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════ CYCLE LOG ══ -->
+<div class="page" id="page-cycles">
+  <div class="page-hdr">
+    <h2>Cycle Log</h2>
+    <div class="page-hdr-actions">
+      <button class="btn btn-primary" onclick="openModal('modalCycle','New Cycle Entry')">+ New Cycle</button>
+      <button class="btn btn-secondary btn-sm" onclick="exportCSV('cycles')">⬇ CSV</button>
+      <button class="btn btn-secondary btn-sm" onclick="exportExcel('cycles')">⬇ Excel</button>
+      <button class="btn btn-secondary btn-sm" onclick="exportGoogleSheets('cycles')">📤 Google Sheets</button>
+    </div>
+  </div>
+  <div class="filter-bar">
+    <input type="text" id="cycleSearch" placeholder="Search patient…" oninput="renderCycles()">
+    <select id="cycleStatusFilter" onchange="renderCycles()">
+      <option value="">All Status</option>
+      <option>Ongoing</option><option>Planned</option><option>Completed</option><option>Cancelled</option>
+    </select>
+  </div>
+  <div class="tbl-wrap">
+    <table id="cycleTable"><thead><tr>
+      <th>Patient</th><th>Cycle</th><th>Attempt</th><th>Type</th><th>Protocol</th>
+      <th>Stim Start</th><th>OPU Date</th><th>OPU Time</th>
+      <th>Embryos Created</th><th>ET Prep Start</th>
+      <th>ET Date</th><th>ET Time</th><th>Transferred</th><th>Before</th><th>Remaining</th>
+      <th>β-hCG Date</th><th>β-hCG Result</th><th>LMP</th>
+      <th>Package ₹</th><th>Paid ₹</th><th>Balance ₹</th>
+      <th>Last Visit</th><th>Next Visit</th>
+      <th>Inj Brand</th><th>Clinical Rmk</th><th>Status</th><th>Cancelled</th><th></th>
+    </tr></thead><tbody></tbody></table>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════ CYCLE TRACKER ══ -->
+<div class="page" id="page-tracker">
+  <div class="page-hdr">
+    <h2>Cycle Tracker</h2>
+    <div class="page-hdr-actions">
+      <button class="btn btn-secondary btn-sm" onclick="exportCSV('tracker')">⬇ CSV</button>
+      <button class="btn btn-secondary btn-sm" onclick="exportExcel('tracker')">⬇ Excel</button>
+    </div>
+  </div>
+  <div class="notice"><strong>Live view</strong> — pulls from Cycle Log. Colour: <span class="badge badge-ongoing">Ongoing</span> <span class="badge badge-planned">Planned</span> <span class="badge badge-completed">Completed</span> <span class="badge badge-cancelled">Cancelled</span></div>
+  <div class="tbl-wrap">
+    <table id="trackerTable"><thead><tr>
+      <th>ID</th><th>Patient</th><th>Cycle</th><th>Attempt</th>
+      <th>Stim Start</th><th>OPU Date</th><th>OPU Time</th>
+      <th>ET Prep</th><th>Transfer Date</th><th>Transfer Time</th><th>Type</th>
+      <th>Status</th><th>Cancelled</th>
+    </tr></thead><tbody></tbody></table>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════ DAILY SCHEDULE ══ -->
+<div class="page" id="page-schedule">
+  <div class="page-hdr">
+    <h2>Daily Schedule</h2>
+    <div class="page-hdr-actions">
+      <input type="date" id="scheduleDate" onchange="renderSchedule()" style="border:1.5px solid #e2e8f0;border-radius:7px;padding:7px 10px;font-family:var(--font);font-size:.82rem">
+      <button class="btn btn-secondary btn-sm" onclick="document.getElementById('scheduleDate').value=todayStr();renderSchedule()">Today</button>
+    </div>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+    <div class="dash-section" style="grid-column:1/-1">
+      <div class="ds-head" style="background:var(--teal)">📅 Scheduled Procedures</div>
+      <div class="ds-body"><div class="tbl-wrap"><table id="schedTable"><thead><tr><th>Patient</th><th>Procedure</th><th>Time</th><th>Status</th></tr></thead><tbody></tbody></table></div></div>
+    </div>
+    <div class="dash-section">
+      <div class="ds-head" style="background:#BF360C">🧪 Beta hCG Tests</div>
+      <div class="ds-body"><div class="tbl-wrap"><table id="schedBetaTable"><thead><tr><th>Patient</th><th>ET Date</th><th>Cycle</th></tr></thead><tbody></tbody></table></div></div>
+    </div>
+    <div class="dash-section">
+      <div class="ds-head" style="background:var(--stim)">🧊 Storage Renewals Due</div>
+      <div class="ds-body"><div class="tbl-wrap"><table id="schedStorTable"><thead><tr><th>Patient</th><th>Renewal</th><th>Days</th></tr></thead><tbody></tbody></table></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════ PAYMENTS ══ -->
+<div class="page" id="page-payments">
+  <div class="page-hdr">
+    <h2>Payments</h2>
+    <div class="page-hdr-actions">
+      <button class="btn btn-primary" onclick="openModal('modalPayment','New Payment')">+ New Payment</button>
+      <button class="btn btn-secondary btn-sm" onclick="exportCSV('payments')">⬇ CSV</button>
+      <button class="btn btn-secondary btn-sm" onclick="exportExcel('payments')">⬇ Excel</button>
+      <button class="btn btn-secondary btn-sm" onclick="exportGoogleSheets('payments')">📤 Google Sheets</button>
+    </div>
+  </div>
+  <!-- Payment Summary Cards -->
+  <div id="pmtSummaryCards" style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:14px"></div>
+  <div class="filter-bar">
+    <input type="text" id="pmtSearch" placeholder="Search patient…" oninput="renderPayments()">
+    <select id="pmtClearedFilter" onchange="renderPayments()">
+      <option value="">All Payment Status</option>
+      <option value="Yes">Cleared</option>
+      <option value="Partial">Partial</option>
+      <option value="No">Not Cleared</option>
+      <option value="none">No Payment Yet</option>
+    </select>
+  </div>
+  <div class="tbl-wrap">
+    <table id="pmtTable"><thead><tr><th>Patient</th><th>Date</th><th>Receipt</th><th>Package ₹</th><th>Amount Paid ₹</th><th>Due Now ₹</th><th>Method</th><th>Category</th><th>Remarks</th><th>Cleared</th><th></th></tr></thead><tbody></tbody></table>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════ EMBRYO STORAGE ══ -->
+<div class="page" id="page-embryo">
+  <div class="page-hdr">
+    <h2>Embryo Storage</h2>
+    <div style="background:#e1f5fe;border:1px solid #81d4fa;border-radius:8px;padding:8px 14px;font-size:.78rem;color:#01579b;margin-top:8px;grid-column:1/-1">
+      <strong>📁 Image Paths:</strong> Paste the full file path in Oocyte/Embryo Image fields (e.g. <code>D:\IVF\Images\Pat1.jpg</code>).
+      To view images, click 🖼 in the table row, or set a <strong>local server base URL</strong> below (e.g. run <code>python -m http.server 8080</code> in your images folder):
+      <div style="display:flex;gap:8px;align-items:center;margin-top:6px">
+        <input id="imgServerBase" placeholder="http://localhost:8080/" style="border:1px solid #81d4fa;border-radius:5px;padding:4px 8px;font-size:.78rem;width:260px;font-family:var(--mono)" 
+          oninput="localStorage.setItem('cc_imgbase',this.value)">
+        <span style="font-size:.72rem;color:#0277bd">Set once — saved automatically</span>
+      </div>
+    </div>
+    <div class="page-hdr-actions">
+      <button class="btn btn-primary" onclick="openModal('modalEmbryo','New Storage Entry')">+ Add Entry</button>
+      <button class="btn btn-secondary btn-sm" onclick="exportCSV('embryo')">⬇ CSV</button>
+      <button class="btn btn-secondary btn-sm" onclick="exportExcel('embryo')">⬇ Excel</button>
+    </div>
+  </div>
+  <div class="filter-bar">
+    <input type="text" id="embryoSearch" placeholder="Search by Patient ID or Name…" oninput="renderEmbryo()" style="min-width:260px">
+    <select id="embryoStatusFilter" onchange="renderEmbryo()">
+      <option value="">All Status</option>
+      <option>Active</option><option>Renewed</option><option>Expired</option><option>Discarded</option>
+    </select>
+  </div>
+  <div class="tbl-wrap">
+    <table id="embryoTable"><thead><tr>
+      <th>Patient</th><th>Total</th><th>Grade</th><th>Storage Start</th>
+      <th>Renewal</th><th>Days Left</th><th>Fee ₹</th><th>Paid ₹</th><th>Due ₹</th>
+      <th>Status</th><th>Vial</th>
+      <th>T1 Date</th><th>T1 Qty</th><th>T1 Grade</th><th>T1 Out</th>
+      <th>T2 Date</th><th>T2 Qty</th><th>T2 Out</th>
+      <th>T3 Date</th><th>T3 Qty</th><th>T3 Out</th>
+      <th>Discarded</th><th>Remaining</th><th>Oocyte</th><th>Embryo</th><th></th>
+    </tr></thead><tbody></tbody></table>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════ OBSTETRIC ══ -->
+<div class="page" id="page-obstetric">
+  <div class="page-hdr">
+    <h2>Obstetric Tracker</h2>
+    <div class="page-hdr-actions">
+      <button class="btn btn-primary" onclick="openModal('modalObs','New Obstetric Entry')">+ Add Patient</button>
+      <button class="btn btn-secondary btn-sm" onclick="exportCSV('obstetric')">⬇ CSV</button>
+      <button class="btn btn-secondary btn-sm" onclick="exportExcel('obstetric')">⬇ Excel</button>
+    </div>
+  </div>
+  <div class="tbl-wrap">
+    <table id="obsTable"><thead><tr>
+      <th>Patient</th><th>LMP</th><th>EDD</th><th>Gest. Age</th><th>Outcome</th>
+      <th>Delivery Date</th><th>Sex</th><th>Birth Wt</th><th>Complications</th>
+      <th>Balance ₹</th><th>Storage Renewal</th><th>Last Entry</th><th>Follow-up</th><th></th>
+    </tr></thead><tbody></tbody></table>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════ REPORTS ══ -->
+<div class="page" id="page-reports">
+  <div class="page-hdr">
+    <h2>Monthly Reports</h2>
+    <div class="page-hdr-actions">
+      <select id="rptMonth" onchange="renderReports()" style="border:1.5px solid #e2e8f0;border-radius:7px;padding:7px 10px;font-family:var(--font)">
+        <option value="1">January</option><option value="2">February</option><option value="3">March</option>
+        <option value="4">April</option><option value="5">May</option><option value="6">June</option>
+        <option value="7">July</option><option value="8">August</option><option value="9">September</option>
+        <option value="10">October</option><option value="11">November</option><option value="12">December</option>
+      </select>
+      <select id="rptYear" onchange="renderReports()" style="border:1.5px solid #e2e8f0;border-radius:7px;padding:7px 10px;font-family:var(--font)">
+      </select>
+      <button class="btn btn-secondary btn-sm" onclick="exportReportCSV()">⬇ Export Report</button>
+    </div>
+  </div>
+  <div id="reportGrid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:20px"></div>
+  <div class="dash-section">
+    <div class="ds-head" style="background:var(--teal)">📅 Year-to-Date Monthly Volume</div>
+    <div class="ds-body"><div class="tbl-wrap"><table id="ytdTable"><thead><tr><th>Month</th><th>Stim Cycles</th><th>Transfers</th><th>Completed</th><th>Cancelled</th><th>Positive β-hCG</th><th>Deliveries</th><th>Revenue ₹</th><th>Collected ₹</th></tr></thead><tbody></tbody></table></div></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════ MODALS ══ -->
+
+<!-- Patient Modal -->
+<div class="modal-overlay" id="modalPatient">
+<div class="modal" style="max-width:820px">
+  <div class="modal-head"><h3 id="modalPatientTitle">Patient</h3><button class="modal-close" onclick="closeModal('modalPatient')">✕</button></div>
+  <div class="modal-body">
+    <!-- Basic Info -->
+    <div style="background:#f0fafb;border-radius:8px;padding:14px;margin-bottom:12px">
+      <div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--teal);margin-bottom:10px">Basic Information</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px">
+        <div class="field"><label>Patient ID (e.g. 0126)</label><input id="pat_id" placeholder="e.g. 0126" maxlength="6"></div>
+        <div class="field"><label>Full Name</label><input id="pat_name" placeholder="Patient full name"></div>
+        <div class="field"><label>Mobile</label><input id="pat_mobile" placeholder="10-digit mobile"></div>
+        <div class="field"><label>Blood Group (Female)</label><select id="pat_bgf"><option value="">—</option><option>A+</option><option>A-</option><option>B+</option><option>B-</option><option>O+</option><option>O-</option><option>AB+</option><option>AB-</option></select></div>
+        <div class="field"><label>Blood Group (Male)</label><select id="pat_bgm"><option value="">—</option><option>A+</option><option>A-</option><option>B+</option><option>B-</option><option>O+</option><option>O-</option><option>AB+</option><option>AB-</option></select></div>
+        <div class="field"><label>Diagnosis / Notes</label><input id="pat_notes" placeholder="Diagnosis, remarks"></div>
+      </div>
+    </div>
+    <!-- Female Investigations -->
+    <div style="background:#fce4ec;border-radius:8px;padding:14px;margin-bottom:12px">
+      <div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#880e4f;margin-bottom:10px">🩺 Female Investigations</div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px">
+        <div class="field"><label>Hb (g/dL)</label><input id="pat_hb" type="number" step="0.1" placeholder="e.g. 11.5"></div>
+        <div class="field"><label>HIV (Female)</label><select id="pat_hiv_f"><option value="Negative">Negative</option><option value="Positive">Positive</option><option value="Not Done">Not Done</option></select></div>
+        <div class="field"><label>HBsAg (Female)</label><select id="pat_hbsag_f"><option value="Negative">Negative</option><option value="Positive">Positive</option><option value="Not Done">Not Done</option></select></div>
+        <div class="field"><label>HCV (Female)</label><select id="pat_hcv_f"><option value="Negative">Negative</option><option value="Positive">Positive</option><option value="Not Done">Not Done</option></select></div>
+        <div class="field"><label>TSH (mIU/L)</label><input id="pat_tsh" type="number" step="0.01" placeholder="e.g. 2.5"></div>
+        <div class="field"><label>AMH (ng/mL)</label><input id="pat_amh" type="number" step="0.01" placeholder="e.g. 1.2"></div>
+        <div class="field"><label>USG Findings</label><input id="pat_usg" placeholder="e.g. Normal, Fibroid"></div>
+        <div class="field"><label>Hysteroscopy Done?</label><select id="pat_hystero"><option value="">—</option><option>Not Done</option><option>Normal</option><option>Polyp Removed</option><option>Adhesions Lysed</option><option>Septum Resected</option><option>Abnormal</option></select></div>
+      </div>
+    </div>
+    <!-- Male Investigations -->
+    <div style="background:#e3f2fd;border-radius:8px;padding:14px">
+      <div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#0d47a1;margin-bottom:10px">🔬 Male Investigations</div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px">
+        <div class="field"><label>HIV (Male)</label><select id="pat_hiv_m"><option value="Negative">Negative</option><option value="Positive">Positive</option><option value="Not Done">Not Done</option></select></div>
+        <div class="field"><label>HBsAg (Male)</label><select id="pat_hbsag_m"><option value="Negative">Negative</option><option value="Positive">Positive</option><option value="Not Done">Not Done</option></select></div>
+        <div class="field"><label>HCV (Male)</label><select id="pat_hcv_m"><option value="Negative">Negative</option><option value="Positive">Positive</option><option value="Not Done">Not Done</option></select></div>
+        <div class="field"><label>Semen Analysis Date</label><input id="pat_sperm_date" type="date"></div>
+        <div class="field"><label>Total Count (million/mL)</label><input id="pat_sperm_count" type="number" step="0.1" placeholder="e.g. 15.0"></div>
+        <div class="field"><label>Motility (%)</label><input id="pat_sperm_motility" type="number" step="0.1" placeholder="e.g. 45"></div>
+        <div class="field"><label>Semen Freezing Done?</label><select id="pat_semen_freezing"><option value="No">No</option><option value="Yes">Yes</option></select></div>
+        <div class="field" style="grid-column:1/-1"><label>Semen Remarks</label><input id="pat_sperm_remarks" placeholder="e.g. Oligospermia, Normal, Azoospermia"></div>
+      </div>
+    </div>
+    <!-- Visit Tracking -->
+    <div style="background:#e8f5e9;border-radius:8px;padding:14px;margin-top:12px">
+      <div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--sage);margin-bottom:10px">📅 Visit Tracking</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+        <div class="field"><label>Last Visit Date</label><input id="pat_lastvisit" type="date"></div>
+        <div class="field"><label>Next Visit Date</label><input id="pat_nextvisit" type="date"></div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer"><button class="btn btn-secondary" onclick="closeModal('modalPatient')">Cancel</button><button class="btn btn-primary" onclick="savePatient()">Save Patient</button></div>
+</div></div>
+
+<!-- Cycle Modal -->
+<div class="modal-overlay" id="modalCycle">
+<div class="modal" style="max-width:860px">
+  <div class="modal-head"><h3 id="modalCycleTitle">Cycle Entry</h3><button class="modal-close" onclick="closeModal('modalCycle')">✕</button></div>
+  <div class="modal-body">
+    <div id="cy_newEntryHint" style="background:#e1f5fe;border:1px solid #81d4fa;border-radius:8px;padding:10px 14px;margin-bottom:14px;font-size:.8rem;color:#01579b;display:none">
+      <strong>ℹ️ New entry for existing patient</strong> — All fields are blank. This creates a <em>new separate cycle record</em> alongside their previous ones. Previous cycle data is preserved and visible in the Cycle Log table.
+    </div>
+    <!-- Identity -->
+    <div style="background:#f0fafb;border-radius:8px;padding:14px;margin-bottom:14px">
+      <div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--teal);margin-bottom:10px">Patient & Cycle</div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px">
+        <div class="field"><label>Patient ID</label><input id="cy_patid" placeholder="e.g. 0126" oninput="cyAutoFill()"></div>
+        <div class="field auto"><label>Name (Auto)</label><input id="cy_name" readonly></div>
+        <div class="field"><label>Cycle No.</label><input id="cy_cycno" type="number" min="1" value="1"></div>
+        <div class="field"><label>Transfer Attempt</label><input id="cy_attempt" type="number" min="1" value="1"></div>
+        <div class="field"><label>Transfer Type</label><select id="cy_type"><option value="">—</option><option>Fresh</option><option>FET</option></select></div>
+        <div class="field"><label>Protocol</label><select id="cy_protocol" onchange="cyProtocolChange()"><option value="">—</option><option>SELF</option><option>OD</option><option>SD</option><option>ED</option></select></div>
+        <div class="field" id="cy_donorField" style="display:none"><label>Egg Donor ID <span style="color:var(--amber)">★ OD Protocol</span></label><input id="cy_donorid" placeholder="Donor ID (from Egg Donors)" oninput="cyDonorFill()"></div>
+        <div class="field auto" id="cy_donorNameField" style="display:none"><label>Donor Name (Auto)</label><input id="cy_donorname" readonly></div>
+        <div class="field"><label>Inj Brand</label><select id="cy_injbrand"><option value="">—</option><option>EUGON</option><option>GONAL-F</option><option>FOSTIMON</option><option>PUREGON</option><option>MENOPUR</option><option>OTHER</option></select></div>
+        <div class="field"><label>Daily Dose IU</label><input id="cy_dailydose" type="number" placeholder="e.g. 300"></div>
+        <div class="field"><label>Total Dose IU</label><input id="cy_totaldose" type="number"></div>
+      </div>
+    </div>
+    <!-- Stimulation & OPU -->
+    <div style="background:var(--stiml);border-radius:8px;padding:14px;margin-bottom:14px">
+      <div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--stim);margin-bottom:10px">🟣 Stimulation & OPU</div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px">
+        <div class="field"><label>Stim Start Date</label><input id="cy_stimdate" type="date"></div>
+        <div class="field"><label>Stim Start Time</label><select id="cy_stimtime"><option value="">—</option></select></div>
+        <div class="field"><label>OPU / Pick-Up Date</label><input id="cy_opudate" type="date"></div>
+        <div class="field"><label>OPU Time</label><select id="cy_oputime"><option value="">—</option></select></div>
+        <div class="field"><label>Oocytes Retrieved</label><input id="cy_oocytes" type="number"></div>
+        <div class="field"><label>MII (Mature)</label><input id="cy_mii" type="number"></div>
+        <div class="field"><label>Embryos Created</label><input id="cy_created" type="number"></div>
+        <div class="field"><label>Embryos Frozen</label><input id="cy_frozen" type="number"></div>
+      </div>
+    </div>
+    <!-- ET Prep & Transfer -->
+    <div style="background:var(--etprepl);border-radius:8px;padding:14px;margin-bottom:14px">
+      <div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--etprep);margin-bottom:10px">🔵 ET Prep & Transfer</div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px">
+        <div class="field"><label>ET Prep Start Date</label><input id="cy_etprepdate" type="date"></div>
+        <div class="field"><label>ET / Transfer Date</label><input id="cy_etdate" type="date"></div>
+        <div class="field"><label>ET Time</label><select id="cy_ettime"><option value="">—</option></select></div>
+        <div class="field"><label>Embryos Transferred</label><input id="cy_transferred" type="number"></div>
+        <div class="field"><label>Embryos Before Transfer <span style="color:var(--amber);font-weight:700" title="For FET or 2nd attempt: check previous cycle's Remaining column and enter that number here">★</span></label><input id="cy_before" type="number" placeholder="From previous cycle Remaining"></div>
+        <div class="field auto"><label>Remaining (Auto)</label><input id="cy_remaining" readonly></div>
+        <div class="field"><label>LMP Date (manual)</label><input id="cy_lmp" type="date"></div>
+        <div class="field auto"><label>β-hCG Date (Auto ET+14)</label><input id="cy_betadate" readonly></div>
+      </div>
+    </div>
+    <!-- Outcome & Payment -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+      <div style="background:#fafafa;border-radius:8px;padding:14px">
+        <div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--ink3);margin-bottom:10px">Outcome</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+          <div class="field"><label>β-hCG Result</label><select id="cy_betaresult"><option value="">—</option><option>Positive</option><option>Negative</option><option>Borderline</option></select></div>
+          <div class="field"><label>Clinical Remarks</label><select id="cy_clinrmk"><option value="">—</option><option>Routine Cycle</option><option>DOR</option><option>TESE</option><option>PCOS</option><option>Thin Endometrium</option><option>Hydrosalpinx</option><option>Recurrent Failure</option></select></div>
+          <div class="field"><label>Complications</label><select id="cy_complic"><option value="">—</option><option>PIH</option><option>GDM</option><option>APH</option><option>PPH</option><option>IUGR</option><option>Nil</option></select></div>
+          <div class="field" style="grid-column:1/-1"><label>Notes</label><textarea id="cy_notes" rows="2"></textarea></div>
+          <div class="field"><label>Last Visit Date</label><input id="cy_lastvisit" type="date"></div>
+          <div class="field"><label>Next Visit Date</label><input id="cy_nextvisit" type="date"></div>
+        </div>
+      </div>
+      <div style="background:#fafafa;border-radius:8px;padding:14px">
+        <div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--ink3);margin-bottom:10px">Payment & Status</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+          <div class="field"><label>Package (₹)</label><input id="cy_package" type="number" placeholder="e.g. 150000"></div>
+          <div class="field"><label>Cancelled? Y/N</label><select id="cy_cancelled"><option value="N">N — Active</option><option value="Y">Y — Cancelled</option></select></div>
+          <div class="field"><label>Cancellation Reason</label><input id="cy_cancreason" placeholder="If cancelled"></div>
+          <div class="field auto"><label>Status (Auto)</label><input id="cy_status" readonly></div>
+        </div>
+      </div>
+    </div>
+    <input type="hidden" id="cy_editId">
+  </div>
+  <div class="modal-footer"><button class="btn btn-secondary" onclick="closeModal('modalCycle')">Cancel</button><button class="btn btn-primary" onclick="saveCycle()">Save Cycle</button></div>
+</div></div>
+
+<!-- Payment Modal -->
+<div class="modal-overlay" id="modalPayment">
+<div class="modal">
+  <div class="modal-head"><h3>Payment Entry</h3><button class="modal-close" onclick="closeModal('modalPayment')">✕</button></div>
+  <div class="modal-body">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+      <div class="field"><label>Patient ID</label><input id="pm_patid" placeholder="Patient ID" oninput="pmAutoFill()"></div>
+      <div class="field auto"><label>Name (Auto)</label><input id="pm_name" readonly></div>
+      <div class="field"><label>Date</label><input id="pm_date" type="date"></div>
+      <div class="field"><label>Receipt No.</label><input id="pm_receipt" placeholder="e.g. RCP001"></div>
+      <div class="field auto"><label>Package ₹ (Auto)</label><input id="pm_package" readonly></div>
+      <div class="field highlight"><label>Amount Paid (₹)</label><input id="pm_amount" type="number" placeholder="Amount received"></div>
+      <div class="field"><label>Payment Method</label><select id="pm_method"><option value="">—</option><option>Cash</option><option>Online Transfer</option><option>UPI</option><option>Cheque</option><option>Card</option></select></div>
+      <div class="field"><label>Transaction Ref.</label><input id="pm_ref" placeholder="UTR / Cheque no."></div>
+      <div class="field"><label>Category</label><select id="pm_cat"><option value="">—</option><option>IVF Package</option><option>Embryo Storage</option><option>Consultation</option><option>Medicine</option><option>Lab Test</option><option>Other</option></select></div>
+      <div class="field"><label>Cleared?</label><select id="pm_cleared"><option>No</option><option>Yes</option><option>Partial</option></select></div>
+      <div class="field" style="grid-column:1/-1"><label>Remarks</label><textarea id="pm_remarks" rows="2"></textarea></div>
+    </div>
+    <input type="hidden" id="pm_editId">
+  </div>
+  <div class="modal-footer"><button class="btn btn-secondary" onclick="closeModal('modalPayment')">Cancel</button><button class="btn btn-primary" onclick="savePayment()">Save Payment</button></div>
+</div></div>
+
+<!-- Embryo Storage Modal -->
+<div class="modal-overlay" id="modalEmbryo">
+<div class="modal" style="max-width:800px">
+  <div class="modal-head"><h3>Embryo Storage Entry</h3><button class="modal-close" onclick="closeModal('modalEmbryo')">✕</button></div>
+  <div class="modal-body">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+      <div class="field"><label>Patient ID</label><input id="es_patid" oninput="esAutoFill()"></div>
+      <div class="field auto"><label>Name (Auto)</label><input id="es_name" readonly></div>
+      <div class="field"><label>Total Embryos in Bank</label><input id="es_total" type="number"></div>
+      <div class="field"><label>Embryo Grade / Quality</label><input id="es_grade" placeholder="e.g. 5AA, 4BB, Grade I"></div>
+      <div class="field"><label>Storage Start Date</label><input id="es_startdate" type="date" oninput="esCalcRenewal()"></div>
+      <div class="field auto"><label>Renewal Date (Auto Start+6mo, editable)</label><input id="es_renewal" type="date"></div>
+      <div class="field"><label>Annual Fee (₹)</label><input id="es_fee" type="number"></div>
+      <div class="field"><label>Fee Paid (₹)</label><input id="es_feepaid" type="number"></div>
+      <div class="field"><label>Storage Status</label><select id="es_status"><option>Active</option><option>Renewed</option><option>Expired</option><option>Discarded</option></select></div>
+      <div class="field"><label>Vial Location (Tank/Dewar)</label><input id="es_vial" placeholder="e.g. Tank A, Canister 3"></div>
+      <div class="field"><label>Discard Date</label><input id="es_discarddate" type="date"></div>
+      <div class="field"><label>Embryos Discarded</label><input id="es_discarded" type="number" value="0"></div>
+      <div class="field"><label>Discard Reason</label><input id="es_discardreason"></div>
+      <div class="field"><label>Witness Name</label><input id="es_witness"></div>
+      <div class="field"><label>Oocyte Image Path</label><input id="es_oocimg" placeholder="e.g. D:\IVF\Images\Oocyte_Pat1.jpg"></div>
+      <div class="field"><label>Embryo Image Path</label><input id="es_embimg" placeholder="e.g. D:\IVF\Images\Embryo_Pat1.jpg"></div>
+      <div class="field" style="grid-column:1/-1"><label>Remarks</label><textarea id="es_remarks" rows="2"></textarea></div>
+    </div>
+    <!-- Transfer History — up to 3 -->
+    <div style="background:#e8f5e9;border-radius:8px;padding:14px;margin-top:14px">
+      <div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--sage);margin-bottom:10px">🟢 Transfer Events (from this storage batch)</div>
+      <div style="overflow-x:auto">
+        <table style="width:100%;border-collapse:collapse;font-size:.82rem">
+          <thead><tr style="background:var(--sage);color:#fff">
+            <th style="padding:7px 10px;text-align:left">#</th>
+            <th style="padding:7px 10px;text-align:left">Transfer Date</th>
+            <th style="padding:7px 10px;text-align:center">Embryos Transferred</th>
+            <th style="padding:7px 10px;text-align:left">Quality Transferred</th>
+            <th style="padding:7px 10px;text-align:left">Outcome</th>
+          </tr></thead>
+          <tbody>
+            <tr>
+              <td style="padding:6px 10px">T1</td>
+              <td style="padding:6px 10px"><input id="es_t1date" type="date" style="border:1px solid #c8e6c9;border-radius:5px;padding:4px 8px;font-size:.82rem;width:140px"></td>
+              <td style="padding:6px 10px;text-align:center"><input id="es_t1qty" type="number" min="0" oninput="esCalcRemaining()" style="border:1px solid #c8e6c9;border-radius:5px;padding:4px 8px;width:70px;text-align:center"></td>
+              <td style="padding:6px 10px"><input id="es_t1grade" placeholder="e.g. 5AA" style="border:1px solid #c8e6c9;border-radius:5px;padding:4px 8px;font-size:.82rem;width:120px"></td>
+              <td style="padding:6px 10px"><select id="es_t1outcome" style="border:1px solid #c8e6c9;border-radius:5px;padding:4px 8px;font-size:.82rem"><option value="">—</option><option>Positive</option><option>Negative</option><option>Pending</option></select></td>
+            </tr>
+            <tr>
+              <td style="padding:6px 10px">T2</td>
+              <td style="padding:6px 10px"><input id="es_t2date" type="date" style="border:1px solid #c8e6c9;border-radius:5px;padding:4px 8px;font-size:.82rem;width:140px"></td>
+              <td style="padding:6px 10px;text-align:center"><input id="es_t2qty" type="number" min="0" oninput="esCalcRemaining()" style="border:1px solid #c8e6c9;border-radius:5px;padding:4px 8px;width:70px;text-align:center"></td>
+              <td style="padding:6px 10px"><input id="es_t2grade" placeholder="e.g. 4BB" style="border:1px solid #c8e6c9;border-radius:5px;padding:4px 8px;font-size:.82rem;width:120px"></td>
+              <td style="padding:6px 10px"><select id="es_t2outcome" style="border:1px solid #c8e6c9;border-radius:5px;padding:4px 8px;font-size:.82rem"><option value="">—</option><option>Positive</option><option>Negative</option><option>Pending</option></select></td>
+            </tr>
+            <tr>
+              <td style="padding:6px 10px">T3</td>
+              <td style="padding:6px 10px"><input id="es_t3date" type="date" style="border:1px solid #c8e6c9;border-radius:5px;padding:4px 8px;font-size:.82rem;width:140px"></td>
+              <td style="padding:6px 10px;text-align:center"><input id="es_t3qty" type="number" min="0" oninput="esCalcRemaining()" style="border:1px solid #c8e6c9;border-radius:5px;padding:4px 8px;width:70px;text-align:center"></td>
+              <td style="padding:6px 10px"><input id="es_t3grade" placeholder="e.g. 3BC" style="border:1px solid #c8e6c9;border-radius:5px;padding:4px 8px;font-size:.82rem;width:120px"></td>
+              <td style="padding:6px 10px"><select id="es_t3outcome" style="border:1px solid #c8e6c9;border-radius:5px;padding:4px 8px;font-size:.82rem"><option value="">—</option><option>Positive</option><option>Negative</option><option>Pending</option></select></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div style="margin-top:10px;display:flex;gap:16px;font-size:.85rem;font-weight:600">
+        <span>Total: <span id="es_total_disp" style="color:var(--teal)">0</span></span>
+        <span>Transferred: <span id="es_transferred_disp" style="color:var(--sage)">0</span></span>
+        <span>Discarded: <span id="es_discarded_disp" style="color:var(--rose)">0</span></span>
+        <span>Remaining: <strong id="es_remaining_disp" style="color:var(--stim)">0</strong></span>
+      </div>
+    </div>
+    <input type="hidden" id="es_editId">
+  </div>
+  <div class="modal-footer"><button class="btn btn-secondary" onclick="closeModal('modalEmbryo')">Cancel</button><button class="btn btn-primary" onclick="saveEmbryo()">Save</button></div>
+</div></div>
+
+<!-- Obstetric Modal -->
+<div class="modal-overlay" id="modalObs">
+<div class="modal" style="max-width:800px">
+  <div class="modal-head"><h3>Obstetric Entry</h3><button class="modal-close" onclick="closeModal('modalObs')">✕</button></div>
+  <div class="modal-body">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+      <div class="field"><label>Patient ID</label><input id="ob_patid" oninput="obAutoFill()"></div>
+      <div class="field auto"><label>Name (Auto)</label><input id="ob_name" readonly></div>
+      <div class="field auto"><label>LMP (Auto from Cycle Log)</label><input id="ob_lmp" readonly></div>
+      <div class="field auto"><label>EDD (LMP + 280 days)</label><input id="ob_edd" readonly></div>
+      <div class="field auto"><label>Gestational Age (Live)</label><input id="ob_ga" readonly></div>
+      <div class="field"><label>Pregnancy Outcome</label><select id="ob_outcome"><option value="">—</option><option>Ongoing Pregnancy</option><option>Full Term Delivery</option><option>Preterm Delivery</option><option>Miscarriage</option><option>Chemical Pregnancy</option><option>IUFD</option></select></div>
+      <div class="field"><label>Delivery Date</label><input id="ob_delivdate" type="date"></div>
+      <div class="field"><label>Sex of Child</label><select id="ob_sex"><option value="">—</option><option>Male</option><option>Female</option><option>2 Male (Twins)</option><option>2 Female (Twins)</option><option>Male+Female (Twins)</option></select></div>
+      <div class="field"><label>Birth Weight (kg)</label><input id="ob_bwt" type="number" step="0.1"></div>
+      <div class="field"><label>Complications</label><select id="ob_complic"><option value="">—</option><option>PIH</option><option>GDM</option><option>APH</option><option>PPH</option><option>IUGR</option><option>Nil</option></select></div>
+      <div class="field"><label>Last Entry Date</label><input id="ob_lastentry" type="date"></div>
+      <div class="field"><label>Next Follow-up</label><input id="ob_followup" type="date"></div>
+      <div class="field" style="grid-column:1/-1"><label>Remarks</label><textarea id="ob_remarks" rows="2"></textarea></div>
+    </div>
+    <input type="hidden" id="ob_editId">
+  </div>
+  <div class="modal-footer"><button class="btn btn-secondary" onclick="closeModal('modalObs')">Cancel</button><button class="btn btn-primary" onclick="saveObs()">Save</button></div>
+</div></div>
+
+<!-- ══════════════════════════════════════════════ EXPENSES ══ -->
+<div class="page" id="page-expenses">
+  <div class="page-hdr">
+    <h2>Lab Expenses</h2>
+    <div class="page-hdr-actions">
+      <select id="expMonth" onchange="renderExpenses()" style="border:1.5px solid #e2e8f0;border-radius:7px;padding:7px 10px;font-family:var(--font)">
+        <option value="1">January</option><option value="2">February</option><option value="3">March</option>
+        <option value="4">April</option><option value="5">May</option><option value="6">June</option>
+        <option value="7">July</option><option value="8">August</option><option value="9">September</option>
+        <option value="10">October</option><option value="11">November</option><option value="12">December</option>
+      </select>
+      <select id="expYear" onchange="renderExpenses()" style="border:1.5px solid #e2e8f0;border-radius:7px;padding:7px 10px;font-family:var(--font)"></select>
+      <button class="btn btn-primary" onclick="openModal('modalExpense','New Expense')">+ Add Expense</button>
+      <button class="btn btn-secondary btn-sm" onclick="exportExpenseCSV()">⬇ CSV</button>
+      <button class="btn btn-secondary btn-sm" onclick="exportExcel('expenses')">⬇ Excel</button>
+    </div>
+  </div>
+  <!-- Monthly Summary Cards -->
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px">
+    <div style="background:var(--white);border-radius:var(--radius);box-shadow:var(--shadow);padding:16px 18px;border-top:3px solid var(--teal)">
+      <div style="font-size:1.5rem;font-weight:700;color:var(--teal)" id="expTotal">₹0</div>
+      <div style="font-size:.72rem;font-weight:600;text-transform:uppercase;letter-spacing:.4px;color:var(--ink4);margin-top:4px">Total Bills (Month)</div>
+    </div>
+    <div style="background:var(--white);border-radius:var(--radius);box-shadow:var(--shadow);padding:16px 18px;border-top:3px solid var(--amber)">
+      <div style="font-size:1.5rem;font-weight:700;color:var(--amber)" id="expTax">₹0</div>
+      <div style="font-size:.72rem;font-weight:600;text-transform:uppercase;letter-spacing:.4px;color:var(--ink4);margin-top:4px">Total Tax</div>
+    </div>
+    <div style="background:var(--white);border-radius:var(--radius);box-shadow:var(--shadow);padding:16px 18px;border-top:3px solid var(--sage)">
+      <div style="font-size:1.5rem;font-weight:700;color:var(--sage)" id="expPaid">₹0</div>
+      <div style="font-size:.72rem;font-weight:600;text-transform:uppercase;letter-spacing:.4px;color:var(--ink4);margin-top:4px">Amount Paid</div>
+    </div>
+    <div style="background:var(--white);border-radius:var(--radius);box-shadow:var(--shadow);padding:16px 18px;border-top:3px solid var(--rose)">
+      <div style="font-size:1.5rem;font-weight:700;color:var(--rose)" id="expDue">₹0</div>
+      <div style="font-size:.72rem;font-weight:600;text-transform:uppercase;letter-spacing:.4px;color:var(--ink4);margin-top:4px">Outstanding / Due</div>
+    </div>
+  </div>
+  <!-- Item-wise Monthly Breakdown Panel -->
+  <div style="background:var(--white);border-radius:var(--radius);box-shadow:var(--shadow);margin-bottom:16px;overflow:hidden">
+    <div style="background:var(--teal);color:#fff;padding:12px 18px;font-weight:600;font-size:.82rem;letter-spacing:.4px;display:flex;align-items:center;cursor:pointer" onclick="toggleItemBreakdown()">
+      📊 Monthly Item-wise Breakdown <span id="itemBreakdownToggle" style="margin-left:auto;font-size:.75rem;opacity:.8">▼ Show</span>
+    </div>
+    <div id="itemBreakdownBody" style="display:none">
+      <div style="display:grid;grid-template-columns:1fr 1fr">
+        <div style="border-right:1px solid #edf2f7">
+          <div style="padding:10px 16px;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--teal);border-bottom:1px solid #edf2f7">By Category</div>
+          <table style="width:100%;border-collapse:collapse;font-size:.82rem">
+            <thead><tr style="background:#f0fafb"><th style="padding:8px 14px;text-align:left;font-size:.72rem;color:var(--ink3)">Category</th><th style="padding:8px 14px;text-align:right;font-size:.72rem;color:var(--ink3)">Amount</th><th style="padding:8px 14px;text-align:right;font-size:.72rem;color:var(--ink3)">%</th></tr></thead>
+            <tbody id="catBreakBody"></tbody>
+          </table>
+        </div>
+        <div>
+          <div style="padding:10px 16px;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--teal);border-bottom:1px solid #edf2f7">Top Items by Value</div>
+          <table style="width:100%;border-collapse:collapse;font-size:.82rem">
+            <thead><tr style="background:#f0fafb"><th style="padding:8px 14px;text-align:left;font-size:.72rem;color:var(--ink3)">Item Name</th><th style="padding:8px 14px;text-align:center;font-size:.72rem;color:var(--ink3)">Qty</th><th style="padding:8px 14px;text-align:right;font-size:.72rem;color:var(--ink3)">Total</th></tr></thead>
+            <tbody id="itemBreakBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Bills Table -->
+  <div class="tbl-wrap">
+    <table id="expTable"><thead><tr>
+      <th>Date</th><th>Vendor</th><th>Invoice No.</th><th>Items</th>
+      <th>Subtotal</th><th>Tax</th><th>Bill Total</th><th>Paid</th><th>Outstanding</th><th>Remarks</th><th>Actions</th>
+    </tr></thead><tbody></tbody></table>
+  </div>
+</div>
+
+<!-- Bill Modal — multiple items per bill -->
+<div class="modal-overlay" id="modalExpense">
+<div class="modal" style="max-width:960px">
+  <div class="modal-head"><h3 id="modalBillTitle">New Bill Entry</h3><button class="modal-close" onclick="closeModal('modalExpense')">✕</button></div>
+  <div class="modal-body">
+    <!-- Bill header -->
+    <div style="background:#f0fafb;border-radius:8px;padding:14px;margin-bottom:14px">
+      <div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--teal);margin-bottom:10px">Bill / Invoice Details</div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px">
+        <div class="field"><label>Bill Date</label><input id="bill_date" type="date"></div>
+        <div class="field"><label>Vendor / Supplier</label><input id="bill_vendor" placeholder="e.g. Merck, Ferring, Vitrolife"></div>
+        <div class="field"><label>Invoice / Bill No.</label><input id="bill_invoiceno" placeholder="Invoice number"></div>
+        <div class="field"><label>Amount Paid (₹)</label><input id="bill_paidamt" type="number" step="0.01" placeholder="Amount paid so far" oninput="calcBillSummary()"></div>
+        <div class="field" style="grid-column:1/-1"><label>Remarks / Notes</label><input id="bill_remarks" placeholder="Any notes about this bill"></div>
+      </div>
+    </div>
+    <!-- Line items -->
+    <div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--teal);margin-bottom:8px">Line Items</div>
+    <div style="overflow-x:auto">
+      <table style="width:100%;border-collapse:collapse;font-size:.82rem" id="billItemsTable">
+        <thead>
+          <tr style="background:var(--teal);color:#fff">
+            <th style="padding:8px 10px;text-align:left;min-width:140px">Item Group</th>
+            <th style="padding:8px 10px;text-align:left;min-width:200px">Item Name</th>
+            <th style="padding:8px 10px;text-align:center;width:70px">Qty</th>
+            <th style="padding:8px 10px;text-align:center;width:100px">Rate ₹</th>
+            <th style="padding:8px 10px;text-align:center;width:80px">Tax %</th>
+            <th style="padding:8px 10px;text-align:center;width:100px">Tax Amt ₹</th>
+            <th style="padding:8px 10px;text-align:center;width:110px">Line Total ₹</th>
+            <th style="padding:8px 10px;width:36px"></th>
+          </tr>
+        </thead>
+        <tbody id="billItemsBody"></tbody>
+      </table>
+    </div>
+    <div style="margin-top:8px;display:flex;gap:10px;align-items:center">
+      <button class="btn btn-secondary btn-sm" onclick="addBillItem()">+ Add Item</button>
+      <div style="margin-left:auto;display:flex;gap:20px;align-items:center">
+        <span style="font-size:.82rem;color:var(--ink4)">Items Subtotal:</span>
+        <span id="bill_subtotal" style="font-weight:700;color:var(--teal)">₹0</span>
+        <span style="font-size:.82rem;color:var(--ink4)">Total Tax:</span>
+        <span id="bill_totaltax" style="font-weight:700;color:var(--amber)">₹0</span>
+        <span style="font-size:.82rem;color:var(--ink4)">Bill Total:</span>
+        <span id="bill_grandtotal" style="font-weight:700;font-size:1.1rem;color:var(--teal)">₹0</span>
+      </div>
+    </div>
+    <!-- Reconcile -->
+    <div style="background:var(--amber4);border-radius:8px;padding:12px 16px;margin-top:14px;display:flex;gap:20px;flex-wrap:wrap;align-items:center">
+      <span style="font-size:.82rem;font-weight:600;color:var(--amber)">Reconcile:</span>
+      <span style="font-size:.82rem">Bill Total: <strong id="bill_rcTotal">₹0</strong></span>
+      <span style="font-size:.82rem">Paid: <strong id="bill_rcPaid">₹0</strong></span>
+      <span style="font-size:.82rem">Outstanding: <strong id="bill_rcDue" style="color:var(--rose)">₹0</strong></span>
+    </div>
+    <input type="hidden" id="bill_editId">
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-secondary" onclick="closeModal('modalExpense')">Cancel</button>
+    <button class="btn btn-primary" onclick="saveBill()">Save Bill</button>
+  </div>
+</div></div>
+
+
+<!-- ══════════════════════════════════════════════ EGG DONORS ══ -->
+<div class="page" id="page-donors">
+  <div class="page-hdr">
+    <h2>Egg Donor Register</h2>
+    <div class="page-hdr-actions">
+      <button class="btn btn-primary" onclick="openModal('modalDonor','New Egg Donor')">+ Add Donor</button>
+      <button class="btn btn-secondary btn-sm" onclick="exportCSV('donors')">⬇ CSV</button>
+      <button class="btn btn-secondary btn-sm" onclick="exportExcel('donors')">⬇ Excel</button>
+    </div>
+  </div>
+  <div class="filter-bar">
+    <input type="text" id="donorSearch" placeholder="Search donor name or ID…" oninput="renderDonors()">
+    <select id="donorStatusFilter" onchange="renderDonors()">
+      <option value="">All Status</option><option>Available</option><option>Allotted</option><option>Completed</option>
+    </select>
+  </div>
+  <div class="tbl-wrap">
+    <table id="donorTable"><thead><tr>
+      <th>Donor ID</th><th>Name</th><th>Blood Group</th><th>Age</th><th>Agent</th>
+      <th>OPU Date</th><th>Oocytes Retrieved</th><th>M2 Mature</th>
+      <th>Payment ₹</th><th>Method</th><th>Inj Given By</th>
+      <th>Allotted Patient 1</th><th>Patient 1 Conceived?</th>
+      <th>Allotted Patient 2</th><th>Patient 2 Conceived?</th>
+      <th>Allotted Patient 3</th><th>Patient 3 Conceived?</th>
+      <th>Status</th><th>Notes</th><th></th>
+    </tr></thead><tbody></tbody></table>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════ IMAGE SERVER ══ -->
+<div class="page" id="page-imgserver">
+  <div class="page-hdr"><h2>🖼 Image Viewer — Local File Access</h2></div>
+  <div class="notice">
+    <strong>How to use:</strong> Paste the full file path of any image saved on this PC into the box below and click View. 
+    Works with any path format: <code>C:\IVF\Images\Oocyte_Pat1.jpg</code> or <code>D:/IVF/Embryo_Pat2.png</code><br>
+    <strong>Tip:</strong> Image paths saved in Embryo Storage appear below automatically.
+  </div>
+  <div style="display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap">
+    <input id="imgPathInput" type="text" placeholder="Paste full image path here e.g. C:\IVF\Oocyte_Pat1.jpg" 
+      style="flex:1;min-width:300px;border:1.5px solid #e2e8f0;border-radius:7px;padding:8px 12px;font-family:var(--font);font-size:.85rem">
+    <button class="btn btn-primary" onclick="viewLocalImage()">View Image</button>
+    <button class="btn btn-secondary" onclick="document.getElementById('imgFileInput').click()">Browse Files</button>
+    <input type="file" id="imgFileInput" accept="image/*" style="display:none" onchange="viewFileInput(this)">
+  </div>
+  <div id="imgPreviewArea" style="display:none;background:var(--white);border-radius:var(--radius);box-shadow:var(--shadow);padding:16px;margin-bottom:20px">
+    <div style="display:flex;gap:16px;align-items:flex-start;flex-wrap:wrap">
+      <img id="imgPreview" style="max-width:480px;max-height:360px;border-radius:8px;border:1px solid #edf2f7" src="" alt="">
+      <div>
+        <div id="imgPreviewLabel" style="font-weight:600;color:var(--teal);margin-bottom:6px"></div>
+        <div class="text-muted" style="font-size:.78rem">Right-click the image to save or open in a new tab.</div>
+      </div>
+    </div>
+  </div>
+  <div class="dash-section">
+    <div class="ds-head" style="background:var(--teal)">📂 Images from Embryo Storage Records</div>
+    <div class="ds-body">
+      <div class="tbl-wrap">
+        <table id="imgStorageTable"><thead><tr>
+          <th>Patient</th><th>Image Type</th><th>File Path</th><th>View</th>
+        </tr></thead><tbody></tbody></table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Egg Donor Modal -->
+<div class="modal-overlay" id="modalDonor">
+<div class="modal" style="max-width:860px">
+  <div class="modal-head"><h3>Egg Donor Entry</h3><button class="modal-close" onclick="closeModal('modalDonor')">✕</button></div>
+  <div class="modal-body">
+    <div style="background:#f0fafb;border-radius:8px;padding:14px;margin-bottom:12px">
+      <div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--teal);margin-bottom:10px">Donor Information</div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px">
+        <div class="field"><label>Donor ID</label><input id="dn_id" placeholder="e.g. D001"></div>
+        <div class="field"><label>Donor Name</label><input id="dn_name" placeholder="Full name"></div>
+        <div class="field"><label>Blood Group</label><select id="dn_bg"><option value="">—</option><option>A+</option><option>A-</option><option>B+</option><option>B-</option><option>O+</option><option>O-</option><option>AB+</option><option>AB-</option></select></div>
+        <div class="field"><label>Age</label><input id="dn_age" type="number"></div>
+        <div class="field"><label>Agent / Source</label><input id="dn_agent" placeholder="Agent name"></div>
+        <div class="field"><label>OPU Date</label><input id="dn_opudate" type="date"></div>
+        <div class="field"><label>Total Dose IU</label><input id="dn_totaldose" type="number"></div>
+        <div class="field"><label>Oocytes Retrieved</label><input id="dn_oocytes" type="number"></div>
+        <div class="field"><label>M2 (Mature)</label><input id="dn_m2" type="number"></div>
+        <div class="field"><label>Payment Given (₹)</label><input id="dn_payment" type="number"></div>
+        <div class="field"><label>Payment Method</label><select id="dn_paymethod"><option value="">—</option><option>Cash</option><option>Online Transfer</option><option>UPI</option></select></div>
+        <div class="field"><label>Injections Given By</label><input id="dn_injby" placeholder="Dr. / Nurse name"></div>
+        <div class="field"><label>Status</label><select id="dn_status"><option>Available</option><option>Allotted</option><option>Completed</option></select></div>
+      </div>
+    </div>
+    <div style="background:#f3e5f5;border-radius:8px;padding:14px;margin-bottom:12px">
+      <div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--stim);margin-bottom:10px">Allotted Patients (up to 3)</div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px">
+        <div class="field"><label>Patient ID 1</label><input id="dn_pat1" placeholder="Patient ID" oninput="dnPatFill(1)"></div>
+        <div class="field auto"><label>Patient 1 Name</label><input id="dn_pat1name" readonly></div>
+        <div class="field auto"><label>Patient 1 Conceived?</label><input id="dn_pat1conceived" readonly></div>
+        <div class="field"><label>Patient ID 2</label><input id="dn_pat2" placeholder="Patient ID" oninput="dnPatFill(2)"></div>
+        <div class="field auto"><label>Patient 2 Name</label><input id="dn_pat2name" readonly></div>
+        <div class="field auto"><label>Patient 2 Conceived?</label><input id="dn_pat2conceived" readonly></div>
+        <div class="field"><label>Patient ID 3</label><input id="dn_pat3" placeholder="Patient ID" oninput="dnPatFill(3)"></div>
+        <div class="field auto"><label>Patient 3 Name</label><input id="dn_pat3name" readonly></div>
+        <div class="field auto"><label>Patient 3 Conceived?</label><input id="dn_pat3conceived" readonly></div>
+      </div>
+    </div>
+    <div class="field"><label>Notes</label><textarea id="dn_notes" rows="2"></textarea></div>
+    <input type="hidden" id="dn_editId">
+  </div>
+  <div class="modal-footer"><button class="btn btn-secondary" onclick="closeModal('modalDonor')">Cancel</button><button class="btn btn-primary" onclick="saveDonor()">Save Donor</button></div>
+</div></div>
+
+<script>
+function exportExpenseCSV(){
+  // Export from DB.bills with one row per line item
+  const h=['Date','Vendor','Invoice No','Item Group','Item Name','Qty','Rate','Tax%','Tax Amt','Line Total','Bill Grand Total','Paid','Outstanding','Remarks'];
+  const rows=[];
+  (DB.bills||[]).forEach(b=>{
+    (Array.isArray(b.items) ? b.items : []).forEach(i=>{
+      rows.push([b.date||'',b.vendor||'',b.invoiceno||'',i.itemgroup||'',i.itemname||'',i.qty||0,i.rate||0,i.tax||0,(+i.taxamt||0).toFixed(2),(+i.total||0).toFixed(2),(+b.grandtotal||0).toFixed(2),(+b.paidamt||0).toFixed(2),((+b.grandtotal||0)-(+b.paidamt||0)).toFixed(2),b.remarks||'']);
+    });
+  });
+  const csv=[h.join(','),...rows.map(r=>r.map(v=>String(v??'').replace(/,/g,';')).join(','))].join('\n');
+  const a=document.createElement('a'); a.href='data:text/csv;charset=utf-8,\uFEFF'+encodeURIComponent(csv); a.download=`CareCure_Expenses_${todayStr()}.csv`; a.click();
+  toast('Expenses CSV exported','success');
+}
+// Add expenses to Excel export
+const _origExportExcel=exportExcel;
+function exportExcel(store){
+  if(store==='expenses'){
+    const h=['Date','Vendor','Invoice No','Item Group','Item Name','Qty','Rate','Tax%','Tax Amt','Line Total','Bill Total','Paid','Outstanding','Remarks'];
+    const r=[];
+    (DB.bills||[]).forEach(b=>{
+      (Array.isArray(b.items) ? b.items : []).forEach(i=>{
+        r.push([b.date||'',b.vendor||'',b.invoiceno||'',i.itemgroup||'',i.itemname||'',i.qty||0,i.rate||0,i.tax||0,(+i.taxamt||0).toFixed(2),(+i.total||0).toFixed(2),(+b.grandtotal||0).toFixed(2),(+b.paidamt||0).toFixed(2),((+b.grandtotal||0)-(+b.paidamt||0)).toFixed(2),b.remarks||'']);
+      });
+    });
+    let html=`<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel"><head><meta charset="UTF-8"></head><body><table><tr>${h.map(c=>`<th style="background:#005f73;color:#fff;font-weight:bold">${c}</th>`).join('')}</tr>${r.map(row=>`<tr>${row.map(c=>`<td>${c??''}</td>`).join('')}</tr>`).join('')}</table></body></html>`;
+    const a=document.createElement('a'); a.href='data:application/vnd.ms-excel;charset=utf-8,'+encodeURIComponent(html); a.download=`CareCure_Expenses_${todayStr()}.xls`; a.click();
+    toast('Excel exported','success'); return;
+  }
+  _origExportExcel(store);
+}
+// Init expense month/year dropdowns
+(function initExpFilters(){
+  const ms=document.getElementById('expMonth');
+  const ys=document.getElementById('expYear');
+  if(ms) ms.value=new Date().getMonth()+1;
+  if(ys){
+    const cur=new Date().getFullYear();
+    for(let y=cur;y>=cur-5;y--){ const o=document.createElement('option'); o.value=y; o.textContent=y; ys.appendChild(o); }
+    ys.value=cur;
+  }
+})();
+
+// ══════════════════════════════════════════════════════════════════
+// GOOGLE SHEETS INTEGRATION
+// ══════════════════════════════════════════════════════════════════
+// STEP 1: Paste your Google Apps Script Web App URL below
+// (You will get this URL after deploying the Apps Script — see SETUP GUIDE)
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxNvklJBVjw22JiwCqUKyS5EancvpeX74uJVaCHSTHxxVXwVBBTj9vKrfC0_LdbZKp4oQ/exec';
+
+const STORES = ['patients','cycles','payments','embryo','obstetric','expenses','donors','bills'];
+const DB = {};
+STORES.forEach(k => { DB[k] = []; });
+
+// ── Show/hide loading overlay
+function showLoading(msg){ 
+  document.getElementById('gsLoadingMsg').textContent = msg||'Loading…';
+  document.getElementById('gsLoadingOverlay').style.display='flex'; 
+}
+function hideLoading(){ 
+  document.getElementById('gsLoadingOverlay').style.display='none'; 
+}
+
+// ── Load ALL data from Google Sheets on startup
+async function loadAllFromSheets(){
+  if(!SCRIPT_URL || SCRIPT_URL==='YOUR_APPS_SCRIPT_URL_HERE'){
+    toast('⚠️ Please set your Google Apps Script URL in the HTML file','error');
+    hideLoading();
+    return;
+  }
+  showLoading('Loading patient data from Google Sheets…');
+  try {
+    const res = await fetch(SCRIPT_URL + '?action=getAll', {method:'GET'});
+    const data = await res.json();
+    if(data.error){ toast('Sheets error: '+data.error,'error'); hideLoading(); return; }
+    STORES.forEach(k => { DB[k] = data[k] || []; });
+    normalizeAllDates();   // convert any non-ISO dates from Sheets to YYYY-MM-DD
+    hideLoading();
+    renderAll();
+    toast('Data loaded from Google Sheets','success');
+  } catch(e){
+    toast('Could not connect to Google Sheets — check your Script URL','error');
+    hideLoading();
+  }
+}
+
+// ── Save a single store back to Google Sheets
+async function save(store){
+  if(!SCRIPT_URL || SCRIPT_URL==='YOUR_APPS_SCRIPT_URL_HERE') return;
+  try {
+    const body = JSON.stringify({ action:'save', store, data: DB[store] });
+    const res = await fetch(SCRIPT_URL, { method:'POST', body, headers:{'Content-Type':'text/plain'} });
+    const result = await res.json();
+    if(result && result.error) toast('Sheets save error ('+store+'): '+result.error,'error');
+  } catch(e){
+    toast('Save to Sheets failed — check connection','error');
+  }
+}
+function uid(){ return Date.now().toString(36)+Math.random().toString(36).slice(2,6); }
+
+// ── TIMES dropdown
+const TIMES=[];
+for(let h=7;h<=20;h++) for(let m of[0,30]) TIMES.push(`${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}`);
+function populateTimeSelects(){
+  document.querySelectorAll('select[id$="time"],select[id$="stimtime"],select[id$="oputime"],select[id$="ettime"]').forEach(sel=>{
+    const cur=sel.value;
+    sel.innerHTML='<option value="">—</option>'+TIMES.map(t=>`<option value="${t}">${t}</option>`).join('');
+    if(cur) sel.value=cur;
+  });
+}
+
+// ── DATE HELPERS
+function todayStr(){ return new Date().toISOString().slice(0,10); }
+
+// Robust parser: handles YYYY-MM-DD, DD/MM/YYYY, DD-MM-YYYY, 
+// "15 Mar 2025", "15 March 2025", Excel serials, and general JS Date strings.
+function parseDate(d){
+  if(!d) return null;
+  if(d instanceof Date) return isNaN(d.getTime()) ? null : d;
+  const s = String(d).trim();
+  if(!s) return null;
+  // ISO YYYY-MM-DD
+  if(/^\d{4}-\d{2}-\d{2}$/.test(s)){
+    const dt = new Date(s + 'T00:00:00');
+    return isNaN(dt.getTime()) ? null : dt;
+  }
+  // DD/MM/YYYY or DD-MM-YYYY
+  const dmy = s.match(/^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})$/);
+  if(dmy){
+    const dt = new Date(`${dmy[3]}-${dmy[2].padStart(2,'0')}-${dmy[1].padStart(2,'0')}T00:00:00`);
+    return isNaN(dt.getTime()) ? null : dt;
+  }
+  // "15 Mar 2025" or "15 March 2025"
+  const dmy2 = s.match(/^(\d{1,2})\s+([A-Za-z]+)\s+(\d{4})$/);
+  if(dmy2){
+    const dt = new Date(`${dmy2[1]} ${dmy2[2]} ${dmy2[3]}`);
+    return isNaN(dt.getTime()) ? null : dt;
+  }
+  // Excel serial number (numeric string, plausible date range 2000-2099)
+  if(/^\d+$/.test(s)){
+    const serial = parseInt(s);
+    if(serial > 36526 && serial < 73050){
+      const dt = new Date(Math.round((serial - 25569) * 86400000));
+      return isNaN(dt.getTime()) ? null : dt;
+    }
+  }
+  // General fallback (handles RFC 2822, ISO with time, etc.)
+  const dt = new Date(s);
+  return isNaN(dt.getTime()) ? null : dt;
+}
+
+// Normalize any date value to ISO YYYY-MM-DD string, returns '' if unparseable
+function toISODate(d){
+  const dt = parseDate(d);
+  if(!dt) return '';
+  const y = dt.getFullYear();
+  const m = String(dt.getMonth()+1).padStart(2,'0');
+  const day = String(dt.getDate()).padStart(2,'0');
+  return `${y}-${m}-${day}`;
+}
+
+function fmtDate(d){
+  if(!d) return '';
+  const dt = parseDate(d);
+  if(!dt) return '';
+  return dt.toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'});
+}
+function diffDays(a,b){
+  const da = parseDate(a);
+  const db = parseDate(b);
+  if(!da || !db) return 0;
+  return Math.round((db.getTime() - da.getTime()) / 86400000);
+}
+function addDays(d,n){
+  const dt = parseDate(d);
+  if(!dt) return '';
+  dt.setDate(dt.getDate() + n);
+  return toISODate(dt);
+}
+function addMonths(d,m){
+  const dt = parseDate(d);
+  if(!dt) return '';
+  dt.setMonth(dt.getMonth() + m);
+  return toISODate(dt);
+}
+function getGA(lmp){
+  if(!lmp) return '';
+  const isoLmp = toISODate(lmp);
+  if(!isoLmp) return '';
+  const days = diffDays(isoLmp, todayStr());
+  if(days < 0) return '';
+  const w = Math.floor(days/7), day = days%7;
+  return `${w}w ${day}d`;
+}
+function getEDD(lmp){
+  if(!lmp) return '';
+  const isoLmp = toISODate(lmp);
+  return isoLmp ? addDays(isoLmp, 280) : '';
+}
+
+// Normalize date fields on a record to ISO format to ensure consistent comparisons
+function normalizeDateFields(obj, keys){
+  keys.forEach(k => {
+    if(obj[k]){ const iso = toISODate(obj[k]); if(iso) obj[k] = iso; }
+  });
+  return obj;
+}
+// Called once after loading from Sheets to normalize all date values in DB
+function normalizeAllDates(){
+  DB.patients.forEach(p  => { normalizeDateFields(p, ['regdate','sperm_date','lastvisit','nextvisit']); if(!p.semen_freezing) p.semen_freezing='No'; });
+  DB.cycles.forEach(c    => {
+    normalizeDateFields(c, ['stimdate','opudate','etprepdate','etdate','lmp','betadate','lastvisit','nextvisit']);
+    normalizeTimeFields(c, ['stimtime','oputime','ettime']);
+  });
+  DB.payments.forEach(p  => normalizeDateFields(p, ['date']));
+  DB.embryo.forEach(e    => normalizeDateFields(e, ['startdate','renewal','discarddate','t1date','t2date','t3date']));
+  DB.obstetric.forEach(o => normalizeDateFields(o, ['delivdate','lastentry','followup']));
+  DB.expenses.forEach(e  => normalizeDateFields(e, ['date']));
+  DB.donors.forEach(dn   => normalizeDateFields(dn, ['opudate']));
+  DB.bills.forEach(b     => normalizeDateFields(b, ['date']));
+}
+
+// ── TIME HELPER
+// Google Sheets sometimes returns times as full ISO strings or "HH:MM:SS AM/PM".
+// This extracts just HH:MM in 24-hour format from any time value.
+function fmtTime(t){
+  if(!t) return '';
+  const s = String(t).trim();
+  if(!s) return '';
+  // Already clean HH:MM
+  if(/^\d{1,2}:\d{2}$/.test(s)) return s;
+  // HH:MM:SS
+  const hms = s.match(/^(\d{1,2}):(\d{2})(?::\d{2})?$/);
+  if(hms) return `${hms[1].padStart(2,'0')}:${hms[2]}`;
+  // Full ISO datetime: 2025-03-15T08:30:00... or ...T08:30:00.000Z
+  const iso = s.match(/T(\d{2}):(\d{2})/);
+  if(iso) return `${iso[1]}:${iso[2]}`;
+  // "8:30 AM" / "08:30 PM" style
+  const ampm = s.match(/(\d{1,2}):(\d{2})\s*(AM|PM)/i);
+  if(ampm){
+    let h = parseInt(ampm[1]);
+    const m = ampm[2];
+    const isPM = ampm[3].toUpperCase() === 'PM';
+    if(isPM && h !== 12) h += 12;
+    if(!isPM && h === 12) h = 0;
+    return `${String(h).padStart(2,'0')}:${m}`;
+  }
+  // Try parsing as a date object to extract time
+  const dt = new Date(s);
+  if(!isNaN(dt.getTime())) return `${String(dt.getHours()).padStart(2,'0')}:${String(dt.getMinutes()).padStart(2,'0')}`;
+  return s; // fallback: return as-is
+}
+
+// Normalize time fields on a record to HH:MM format
+function normalizeTimeFields(obj, keys){
+  keys.forEach(k=>{ if(obj[k]){ const t=fmtTime(obj[k]); if(t) obj[k]=t; } });
+  return obj;
+}
+function getPatient(id){ return DB.patients.find(p=>String(p.id)===String(id)); }
+function getPatientName(id){ const p=getPatient(id); return p?p.name:''; }
+function getLatestCycle(patid){ const cycs=DB.cycles.filter(c=>String(c.patid)===String(patid)); if(!cycs.length) return null; return cycs.sort((a,b)=>b.cycno-a.cycno||b.attempt-a.attempt)[0]; }
+function getTotalPaid(patid){ return DB.payments.filter(p=>String(p.patid)===String(patid)).reduce((s,p)=>s+(+p.amount||0),0); }
+function getTotalPackage(patid){ return DB.cycles.filter(c=>String(c.patid)===String(patid)).reduce((s,c)=>s+(+c.package||0),0); }
+function getPackage(patid){ return getTotalPackage(patid); }  // sum all cycles
+function getBalance(patid){ return getTotalPackage(patid)-(getTotalPaid(patid)||0); }
+function getLMP(patid){ const c=DB.cycles.find(cy=>String(cy.patid)===String(patid)&&cy.betaresult==='Positive'&&cy.lmp); return c?c.lmp:''; }
+function getStorageRenewal(patid){ const e=DB.embryo.find(es=>String(es.patid)===String(patid)); return e?e.renewal:''; }
+function getStorageStatus(patid){ const e=DB.embryo.find(es=>String(es.patid)===String(patid)); return e?e.status:''; }
+
+// ── CYCLE STATUS
+function cycleStatus(cy){
+  if(cy.cancelled==='Y') return 'Cancelled';
+  const now=new Date();
+  if(cy.etdate && cy.ettime){
+    const etDt=new Date(cy.etdate+'T'+cy.ettime+':00');
+    if(etDt<now) return 'Completed';
+  }
+  if(cy.opudate||cy.etdate) return 'Planned';
+  if(cy.stimdate||cy.etprepdate) return 'Ongoing';
+  return '';
+}
+
+// ── NAVIGATION
+function showPage(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  document.querySelectorAll('.nav-btn').forEach(b=>{ if(b.getAttribute('onclick')&&b.getAttribute('onclick').includes("'"+id+"'")) b.classList.add('active'); });
+  if(id==='backup'){ renderBackupHistory(); return; }
+  renderAll();
+}
+
+// ── MODALS
+function clearForm(modalId){
+  const m=document.getElementById(modalId);
+  // Clear ALL inputs — including readonly auto-fills — so no stale data from previous entry
+  m.querySelectorAll('input').forEach(el=>{ el.value=''; });
+  m.querySelectorAll('select').forEach(el=>{ el.selectedIndex=0; });
+  m.querySelectorAll('textarea').forEach(el=>{ el.value=''; });
+  // Per-modal defaults restored after the blanket clear
+  if(modalId==='modalPatient'){
+    ['pat_hiv_f','pat_hbsag_f','pat_hcv_f','pat_hiv_m','pat_hbsag_m','pat_hcv_m'].forEach(fid=>{
+      const el=document.getElementById(fid); if(el) el.value='Negative';
+    });
+    const sf=document.getElementById('pat_semen_freezing'); if(sf) sf.value='No';
+  }
+  if(modalId==='modalCycle'){
+    // Leave cycno/attempt blank so user fills intentionally — prevents mixing patients
+    document.getElementById('cy_cancelled').value='N';
+    document.getElementById('cy_editId').value='';
+  }
+  if(modalId==='modalPayment'){
+    document.getElementById('pm_date').value=todayStr();
+    document.getElementById('pm_cleared').value='No';
+    document.getElementById('pm_editId').value='';
+  }
+  if(modalId==='modalEmbryo'){
+    document.getElementById('es_discarded').value='0';
+    document.getElementById('es_status').value='Active';
+    document.getElementById('es_editId').value='';
+  }
+  if(modalId==='modalObs'){
+    document.getElementById('ob_lastentry').value=todayStr();
+    document.getElementById('ob_editId').value='';
+  }
+  if(modalId==='modalExpense'){
+    const bdate=document.getElementById('bill_date'); if(bdate) bdate.value=todayStr();
+    const beid=document.getElementById('bill_editId'); if(beid) beid.value='';
+    const bitems=document.getElementById('billItemsBody'); if(bitems){ bitems.innerHTML=''; addBillItem(); }
+    calcBillSummary();
+  }
+}
+function openModal(id, title, skipClear){
+  const m=document.getElementById(id);
+  if(title){ const t=m.querySelector('h3'); if(t) t.textContent=title; }
+  if(!skipClear) clearForm(id);  // new entry = always clear; edit = skipClear=true
+  m.classList.add('open');
+}
+function closeModal(id){ document.getElementById(id).classList.remove('open'); }
+document.querySelectorAll('.modal-overlay').forEach(o=>o.addEventListener('click',e=>{ if(e.target===o) o.classList.remove('open'); }));
+
+// ── TOAST
+function toast(msg, type='info'){ 
+  const c=document.getElementById('toastContainer');
+  const t=document.createElement('div'); t.className=`toast ${type}`; t.textContent=msg; c.appendChild(t);
+  requestAnimationFrame(()=>{ t.classList.add('show'); setTimeout(()=>{ t.classList.remove('show'); setTimeout(()=>c.removeChild(t),300); },3000); });
+}
+
+// ── AUTO-FILLS
+function cyAutoFill(){
+  const id=document.getElementById('cy_patid').value.trim();
+  const p=getPatient(id);
+  document.getElementById('cy_name').value=p?p.name:'';
+  // Show hint if this patient already has cycles and we're creating a new entry (not editing)
+  const hint=document.getElementById('cy_newEntryHint');
+  if(hint){
+    const isEdit=document.getElementById('cy_editId').value;
+    const existingCycles=DB.cycles.filter(c=>String(c.patid)===String(id));
+    hint.style.display=(!isEdit&&existingCycles.length>0)?'block':'none';
+  }
+  cyProtocolChange();
+  updateCyRemaining(); updateCyBetaDate(); updateCyStatus();
+}
+function cyProtocolChange(){
+  const prot=document.getElementById('cy_protocol')?.value;
+  const df=document.getElementById('cy_donorField');
+  const dnf=document.getElementById('cy_donorNameField');
+  if(df) df.style.display=prot==='OD'?'':'none';
+  if(dnf) dnf.style.display=prot==='OD'?'':'none';
+}
+function cyDonorFill(){
+  const did=document.getElementById('cy_donorid')?.value.trim();
+  const donor=DB.donors.find(d=>String(d.id)===String(did)||d.name?.toLowerCase()===did.toLowerCase());
+  const el=document.getElementById('cy_donorname');
+  if(el) el.value=donor?donor.name:'';
+}
+function updateCyRemaining(){
+  const b=+document.getElementById('cy_before').value||0;
+  const t=+document.getElementById('cy_transferred').value||0;
+  document.getElementById('cy_remaining').value=(b&&t)?b-t:'';
+}
+function updateCyBetaDate(){
+  const etd=document.getElementById('cy_etdate').value;
+  document.getElementById('cy_betadate').value=etd?fmtDate(addDays(etd,14)):'';
+}
+function updateCyStatus(){
+  const cy={stimdate:document.getElementById('cy_stimdate').value,opudate:document.getElementById('cy_opudate').value,etprepdate:document.getElementById('cy_etprepdate').value,etdate:document.getElementById('cy_etdate').value,ettime:document.getElementById('cy_ettime').value,cancelled:document.getElementById('cy_cancelled').value};
+  document.getElementById('cy_status').value=cycleStatus(cy);
+}
+['cy_before','cy_transferred'].forEach(id=>document.getElementById(id)?.addEventListener('input',updateCyRemaining));
+document.getElementById('cy_etdate')?.addEventListener('input',()=>{ updateCyBetaDate(); updateCyStatus(); });
+document.getElementById('cy_ettime')?.addEventListener('change',updateCyStatus);
+['cy_stimdate','cy_opudate','cy_etprepdate','cy_cancelled'].forEach(id=>document.getElementById(id)?.addEventListener('change',updateCyStatus));
+
+function pmAutoFill(){
+  const id=document.getElementById('pm_patid').value.trim();
+  const p=getPatient(id);
+  document.getElementById('pm_name').value=p?p.name:'';
+  document.getElementById('pm_package').value=getTotalPackage(id)||'';
+}
+function esAutoFill(){
+  const id=document.getElementById('es_patid').value.trim();
+  document.getElementById('es_name').value=getPatientName(id);
+}
+function esCalcRenewal(){
+  const d=document.getElementById('es_startdate').value;
+  if(d) document.getElementById('es_renewal').value=addMonths(d,6);
+}
+function obAutoFill(){
+  const id=document.getElementById('ob_patid').value.trim();
+  document.getElementById('ob_name').value=getPatientName(id);
+  const lmpRaw=getLMP(id);
+  const lmp=lmpRaw?toISODate(lmpRaw):'';
+  document.getElementById('ob_lmp').value=lmp?fmtDate(lmp):'';
+  document.getElementById('ob_edd').value=lmp?fmtDate(getEDD(lmp)):'';
+  document.getElementById('ob_ga').value=lmp?getGA(lmp):'';
+}
+
+// ── SAVE FUNCTIONS
+function savePatient(){
+  const id=document.getElementById('pat_id').value.trim();
+  const name=document.getElementById('pat_name').value.trim();
+  if(!id||!name){ toast('ID and Name required','error'); return; }
+  const existing=DB.patients.findIndex(p=>String(p.id)===String(id));
+  const g=id=>{ const el=document.getElementById(id); return el?el.value:''; };
+  const rec={
+    id, name,
+    mobile:g('pat_mobile'), bgf:g('pat_bgf'), bgm:g('pat_bgm'), notes:g('pat_notes'),
+    regdate: existing>=0 ? DB.patients[existing].regdate : todayStr(),
+    // Female investigations
+    hb:g('pat_hb'), hiv_f:g('pat_hiv_f')||'Negative', hbsag_f:g('pat_hbsag_f')||'Negative',
+    hcv_f:g('pat_hcv_f')||'Negative', tsh:g('pat_tsh'), amh:g('pat_amh'),
+    usg:g('pat_usg'), hystero:g('pat_hystero'),
+    // Male investigations
+    hiv_m:g('pat_hiv_m')||'Negative', hbsag_m:g('pat_hbsag_m')||'Negative',
+    hcv_m:g('pat_hcv_m')||'Negative',
+    sperm_date:g('pat_sperm_date'), sperm_count:g('pat_sperm_count'),
+    sperm_motility:g('pat_sperm_motility'), sperm_remarks:g('pat_sperm_remarks'),
+    semen_freezing:g('pat_semen_freezing')||'No',
+    lastvisit:g('pat_lastvisit'),
+    nextvisit:g('pat_nextvisit'),
+  };
+  if(existing>=0){ DB.patients[existing]=rec; toast('Patient updated','success'); }
+  else{ DB.patients.push(rec); DB.patients.sort((a,b)=>{ const ay=Number(String(a.id).slice(-2)),by=Number(String(b.id).slice(-2)); if(ay!==by) return ay-by; return Number(String(a.id).slice(0,-2))-Number(String(b.id).slice(0,-2)); }); toast('Patient saved','success'); }
+  save('patients'); closeModal('modalPatient'); renderAll();
+}
+
+function saveCycle(){
+  const patid=document.getElementById('cy_patid').value.trim();
+  if(!patid){ toast('Patient ID required','error'); return; }
+  const etdate=document.getElementById('cy_etdate').value;
+  const editId=document.getElementById('cy_editId').value;
+  const rec={
+    id: editId || uid(),
+    patid, cycno:+document.getElementById('cy_cycno').value||1,
+    attempt:+document.getElementById('cy_attempt').value||1,
+    type:document.getElementById('cy_type').value,
+    protocol:document.getElementById('cy_protocol').value,
+    injbrand:document.getElementById('cy_injbrand').value,
+    dailydose:document.getElementById('cy_dailydose').value,
+    totaldose:document.getElementById('cy_totaldose').value,
+    stimdate:document.getElementById('cy_stimdate').value,
+    stimtime:document.getElementById('cy_stimtime').value,
+    opudate:document.getElementById('cy_opudate').value,
+    oputime:document.getElementById('cy_oputime').value,
+    oocytes:document.getElementById('cy_oocytes').value,
+    mii:document.getElementById('cy_mii').value,
+    created:document.getElementById('cy_created').value,
+    frozen:document.getElementById('cy_frozen').value,
+    etprepdate:document.getElementById('cy_etprepdate').value,
+    etdate, ettime:document.getElementById('cy_ettime').value,
+    transferred:document.getElementById('cy_transferred').value,
+    before:document.getElementById('cy_before').value,
+    remaining:document.getElementById('cy_remaining').value,
+    lmp:document.getElementById('cy_lmp').value,
+    betadate:etdate?addDays(etdate,14):'',
+    betaresult:document.getElementById('cy_betaresult').value,
+    clinrmk:document.getElementById('cy_clinrmk').value,
+    complic:document.getElementById('cy_complic').value,
+    notes:document.getElementById('cy_notes').value,
+    package:document.getElementById('cy_package').value,
+    cancelled:document.getElementById('cy_cancelled').value,
+    cancreason:document.getElementById('cy_cancreason').value,
+    donorid:document.getElementById('cy_donorid')?.value||'',
+    donorname:document.getElementById('cy_donorname')?.value||'',
+    lastvisit:document.getElementById('cy_lastvisit')?.value||'',
+    nextvisit:document.getElementById('cy_nextvisit')?.value||'',
+  };
+  rec.status=cycleStatus(rec);
+  const idx=DB.cycles.findIndex(c=>c.id===rec.id);
+  if(idx>=0){ DB.cycles[idx]=rec; toast('Cycle updated','success'); }
+  else{ DB.cycles.push(rec); toast('Cycle saved — new entry added','success'); }
+  save('cycles'); closeModal('modalCycle');
+  if(rec.betaresult==='Positive'&&rec.lmp){
+    const already=DB.obstetric.find(o=>String(o.patid)===String(patid));
+    if(!already){ DB.obstetric.push({id:uid(),patid,outcome:'Ongoing Pregnancy',lastentry:todayStr()}); save('obstetric'); toast('Obstetric entry auto-created','info'); }
+  }
+  renderAll();
+}
+
+function savePayment(){
+  const patid=document.getElementById('pm_patid').value.trim();
+  const amount=document.getElementById('pm_amount').value;
+  if(!patid||!amount){ toast('Patient ID and Amount required','error'); return; }
+  const rec={
+    id:document.getElementById('pm_editId').value||uid(),
+    patid,date:document.getElementById('pm_date').value||todayStr(),
+    receipt:document.getElementById('pm_receipt').value,
+    package:document.getElementById('pm_package').value,
+    amount,method:document.getElementById('pm_method').value,
+    ref:document.getElementById('pm_ref').value,
+    category:document.getElementById('pm_cat').value,
+    remarks:document.getElementById('pm_remarks').value,
+    cleared:document.getElementById('pm_cleared').value,
+  };
+  const idx=DB.payments.findIndex(p=>p.id===rec.id);
+  if(idx>=0){ DB.payments[idx]=rec; toast('Payment updated','success'); }
+  else{ DB.payments.push(rec); toast('Payment saved','success'); }
+  save('payments'); closeModal('modalPayment'); renderAll();
+}
+
+function esCalcRemaining(){
+  const total=+document.getElementById('es_total').value||0;
+  const disc=+document.getElementById('es_discarded').value||0;
+  const t1=+document.getElementById('es_t1qty').value||0;
+  const t2=+document.getElementById('es_t2qty').value||0;
+  const t3=+document.getElementById('es_t3qty').value||0;
+  const transferred=t1+t2+t3;
+  const remaining=Math.max(0,total-disc-transferred);
+  const d=document.getElementById('es_total_disp'); if(d) d.textContent=total;
+  const d2=document.getElementById('es_transferred_disp'); if(d2) d2.textContent=transferred;
+  const d3=document.getElementById('es_discarded_disp'); if(d3) d3.textContent=disc;
+  const d4=document.getElementById('es_remaining_disp'); if(d4) d4.textContent=remaining;
+  return {total,disc,transferred,remaining};
+}
+function saveEmbryo(){
+  const patid=document.getElementById('es_patid').value.trim();
+  if(!patid){ toast('Patient ID required','error'); return; }
+  const startdate=document.getElementById('es_startdate').value;
+  const {total,disc,transferred,remaining}=esCalcRemaining();
+  const rec={
+    id:document.getElementById('es_editId').value||uid(),
+    patid,total:document.getElementById('es_total').value,
+    grade:document.getElementById('es_grade').value,
+    startdate,renewal:document.getElementById('es_renewal').value||(startdate?addMonths(startdate,6):''),
+    fee:document.getElementById('es_fee').value,
+    feepaid:document.getElementById('es_feepaid').value,
+    status:document.getElementById('es_status').value,
+    vial:document.getElementById('es_vial').value,
+    discarddate:document.getElementById('es_discarddate').value,
+    discarded:document.getElementById('es_discarded').value||0,
+    discardreason:document.getElementById('es_discardreason').value,
+    witness:document.getElementById('es_witness').value,
+    oocimg:document.getElementById('es_oocimg').value,
+    embimg:document.getElementById('es_embimg').value,
+    remarks:document.getElementById('es_remarks').value,
+    t1date:document.getElementById('es_t1date').value,
+    t1qty:document.getElementById('es_t1qty').value||0,
+    t1grade:document.getElementById('es_t1grade').value,
+    t1outcome:document.getElementById('es_t1outcome').value,
+    t2date:document.getElementById('es_t2date').value,
+    t2qty:document.getElementById('es_t2qty').value||0,
+    t2grade:document.getElementById('es_t2grade').value,
+    t2outcome:document.getElementById('es_t2outcome').value,
+    t3date:document.getElementById('es_t3date').value,
+    t3qty:document.getElementById('es_t3qty').value||0,
+    t3grade:document.getElementById('es_t3grade').value,
+    t3outcome:document.getElementById('es_t3outcome').value,
+  };
+  rec.transferred=transferred;
+  rec.remaining=remaining;
+  rec.feedue=(+rec.fee||0)-(+rec.feepaid||0);
+  const idx=DB.embryo.findIndex(e=>e.id===rec.id);
+  if(idx>=0){ DB.embryo[idx]=rec; toast('Storage updated','success'); }
+  else{ DB.embryo.push(rec); toast('Storage entry saved','success'); }
+  save('embryo'); closeModal('modalEmbryo'); renderAll();
+}
+
+function saveObs(){
+  const patid=document.getElementById('ob_patid').value.trim();
+  if(!patid){ toast('Patient ID required','error'); return; }
+  const rec={
+    id:document.getElementById('ob_editId').value||uid(),
+    patid,outcome:document.getElementById('ob_outcome').value,
+    delivdate:document.getElementById('ob_delivdate').value,
+    sex:document.getElementById('ob_sex').value,
+    bwt:document.getElementById('ob_bwt').value,
+    complic:document.getElementById('ob_complic').value,
+    lastentry:document.getElementById('ob_lastentry').value||todayStr(),
+    followup:document.getElementById('ob_followup').value,
+    remarks:document.getElementById('ob_remarks').value,
+  };
+  const idx=DB.obstetric.findIndex(o=>o.id===rec.id);
+  if(idx>=0){ DB.obstetric[idx]=rec; toast('Obstetric entry updated','success'); }
+  else{ DB.obstetric.push(rec); toast('Entry saved','success'); }
+  save('obstetric'); closeModal('modalObs'); renderAll();
+}
+
+// ── EDIT / DELETE HELPERS
+function editPatient(id){
+  const p=getPatient(id); if(!p) return;
+  openModal('modalPatient','Edit Patient',true);
+  document.getElementById('pat_id').value=p.id;
+  document.getElementById('pat_name').value=p.name;
+  document.getElementById('pat_mobile').value=p.mobile||'';
+  document.getElementById('pat_bgf').value=p.bgf||'';
+  document.getElementById('pat_bgm').value=p.bgm||'';
+  document.getElementById('pat_notes').value=p.notes||'';
+  // Female investigations
+  ['hb','hiv_f','hbsag_f','hcv_f','tsh','amh','usg','hystero'].forEach(k=>{
+    const el=document.getElementById('pat_'+k); if(el) el.value=p[k]||'';
+  });
+  ['hiv_f','hbsag_f','hcv_f'].forEach(k=>{
+    const el=document.getElementById('pat_'+k);
+    if(el&&!p[k]) el.value='Negative';
+  });
+  // Male investigations
+  ['hiv_m','hbsag_m','hcv_m','sperm_date','sperm_count','sperm_motility','sperm_remarks'].forEach(k=>{
+    const el=document.getElementById('pat_'+k); if(el) el.value=p[k]||'';
+  });
+  const sfEl=document.getElementById('pat_semen_freezing'); if(sfEl) sfEl.value=p.semen_freezing||'No';
+  ['hiv_m','hbsag_m','hcv_m'].forEach(k=>{
+    const el=document.getElementById('pat_'+k);
+    if(el&&!p[k]) el.value='Negative';
+  });
+  const lvEl=document.getElementById('pat_lastvisit'); if(lvEl) lvEl.value=p.lastvisit||'';
+  const nvEl=document.getElementById('pat_nextvisit'); if(nvEl) nvEl.value=p.nextvisit||'';
+}
+function delPatient(id){ if(!confirm('Delete patient?')) return; DB.patients=DB.patients.filter(p=>String(p.id)!==String(id)); save('patients'); renderAll(); toast('Deleted','error'); }
+
+function editCycle(id){
+  const c=DB.cycles.find(x=>x.id===id); if(!c) return;
+  openModal('modalCycle','Edit Cycle',true);
+  const fields={cy_patid:'patid',cy_cycno:'cycno',cy_attempt:'attempt',cy_type:'type',cy_protocol:'protocol',cy_injbrand:'injbrand',cy_dailydose:'dailydose',cy_totaldose:'totaldose',cy_stimdate:'stimdate',cy_stimtime:'stimtime',cy_opudate:'opudate',cy_oputime:'oputime',cy_oocytes:'oocytes',cy_mii:'mii',cy_created:'created',cy_frozen:'frozen',cy_etprepdate:'etprepdate',cy_etdate:'etdate',cy_ettime:'ettime',cy_transferred:'transferred',cy_before:'before',cy_remaining:'remaining',cy_lmp:'lmp',cy_betaresult:'betaresult',cy_clinrmk:'clinrmk',cy_complic:'complic',cy_notes:'notes',cy_package:'package',cy_cancelled:'cancelled',cy_cancreason:'cancreason',cy_donorid:'donorid',cy_lastvisit:'lastvisit',cy_nextvisit:'nextvisit'};
+  Object.entries(fields).forEach(([fid,key])=>{ const el=document.getElementById(fid); if(el) el.value=c[key]||''; });
+  document.getElementById('cy_name').value=getPatientName(c.patid);
+  setTimeout(()=>{ cyProtocolChange(); if(c.donorid) cyDonorFill(); },50);
+  document.getElementById('cy_betadate').value=c.betadate?fmtDate(c.betadate):'';
+  document.getElementById('cy_status').value=c.status||'';
+  document.getElementById('cy_editId').value=c.id;
+}
+function delCycle(id){ if(!confirm('Delete cycle entry?')) return; DB.cycles=DB.cycles.filter(c=>c.id!==id); save('cycles'); renderAll(); toast('Deleted','error'); }
+
+function editPayment(id){
+  const p=DB.payments.find(x=>x.id===id); if(!p) return;
+  openModal('modalPayment','Edit Payment',true);
+  ['patid','date','receipt','package','amount','method','ref','category','remarks','cleared'].forEach(k=>{ const el=document.getElementById('pm_'+k); if(el) el.value=p[k]||''; });
+  document.getElementById('pm_name').value=getPatientName(p.patid);
+  document.getElementById('pm_editId').value=p.id;
+}
+function delPayment(id){ if(!confirm('Delete payment?')) return; DB.payments=DB.payments.filter(p=>p.id!==id); save('payments'); renderAll(); toast('Deleted','error'); }
+
+function editEmbryo(id){
+  const e=DB.embryo.find(x=>x.id===id); if(!e) return;
+  openModal('modalEmbryo','Edit Storage Entry',true);
+  // Restore basic fields
+  ['patid','total','grade','startdate','renewal','fee','feepaid','status','vial','discarddate','discarded','discardreason','witness','oocimg','embimg','remarks'].forEach(k=>{ const el=document.getElementById('es_'+k); if(el) el.value=e[k]||''; });
+  document.getElementById('es_name').value=getPatientName(e.patid);
+  document.getElementById('es_editId').value=e.id;
+  // FIX: Restore T1/T2/T3 transfer rows (was missing before - data wiped on edit)
+  ['t1','t2','t3'].forEach(function(t){
+    var dEl=document.getElementById('es_'+t+'date'); if(dEl) dEl.value=e[t+'date']||'';
+    var qEl=document.getElementById('es_'+t+'qty');  if(qEl) qEl.value=e[t+'qty']||'';
+    var gEl=document.getElementById('es_'+t+'grade'); if(gEl) gEl.value=e[t+'grade']||'';
+    var oEl=document.getElementById('es_'+t+'outcome'); if(oEl) oEl.value=e[t+'outcome']||'';
+  });
+  // FIX: Refresh live counter after restoring all values
+  esCalcRemaining();
+}
+function delEmbryo(id){ if(!confirm('Delete?')) return; DB.embryo=DB.embryo.filter(e=>e.id!==id); save('embryo'); renderAll(); toast('Deleted','error'); }
+
+function editObs(id){
+  const o=DB.obstetric.find(x=>x.id===id); if(!o) return;
+  openModal('modalObs','Edit Obstetric Entry',true);
+  ['patid','outcome','delivdate','sex','bwt','complic','lastentry','followup','remarks'].forEach(k=>{ const el=document.getElementById('ob_'+k); if(el) el.value=o[k]||''; });
+  document.getElementById('ob_editId').value=o.id;
+  obAutoFill();
+}
+function editExpense(id){
+  const e=DB.expenses.find(x=>x.id===id); if(!e) return;
+  openModal('modalExpense','Edit Expense',true);
+  ['date','vendor','itemgroup','itemname','qty','rate','tax','billamt','paidamt','remarks'].forEach(k=>{ const el=document.getElementById('exp_'+k); if(el) el.value=e[k]||''; });
+  document.getElementById('exp_editId').value=e.id;
+  calcExpenseTotal();
+}
+function delExpense(id){ if(!confirm('Delete expense?')) return; DB.expenses=DB.expenses.filter(e=>e.id!==id); save('expenses'); renderAll(); toast('Deleted','error'); }
+function delObs(id){ if(!confirm('Delete?')) return; DB.obstetric=DB.obstetric.filter(o=>o.id!==id); save('obstetric'); renderAll(); toast('Deleted','error'); }
+
+
+// ── STATUS BADGE
+function statusBadge(s){ const cls={Ongoing:'ongoing',Planned:'planned',Completed:'completed',Cancelled:'cancelled'}; return s?`<span class="badge badge-${cls[s]||'planned'}">${s}</span>`:''; }
+function betaBadge(r){ return r?`<span class="badge badge-${r.toLowerCase()}">${r}</span>`:''; }
+
+// ── INR FORMAT
+function inr(n){ const x=+n||0; return '₹'+x.toLocaleString('en-IN'); }
+
+// ── BILL-BASED EXPENSE FUNCTIONS ──────────────────────
+function addBillItem(){
+  const tbody=document.getElementById('billItemsBody');
+  const tr=document.createElement('tr');
+  tr.style.borderBottom='1px solid #edf2f7';
+  tr.innerHTML=`<td style="padding:5px 8px"><select class="bill-itemgroup" style="border:1px solid #e2e8f0;border-radius:5px;padding:4px 6px;font-size:.78rem;width:100%"><option value="">—</option><option>IVF Media &amp; Consumables</option><option>Fertility Drugs</option><option>Lab Equipment</option><option>Lab Reagents</option><option>Surgical Consumables</option><option>Cryostorage</option><option>Maintenance</option><option>Diagnostics</option><option>Office &amp; Admin</option><option>Other</option></select></td><td style="padding:5px 8px"><input class="bill-itemname" placeholder="Item name" style="border:1px solid #e2e8f0;border-radius:5px;padding:4px 8px;font-size:.82rem;width:100%"></td><td style="padding:5px 8px"><input class="bill-qty" type="number" step="0.01" value="1" oninput="calcBillSummary()" style="border:1px solid #e2e8f0;border-radius:5px;padding:4px 6px;width:60px;text-align:center"></td><td style="padding:5px 8px"><input class="bill-rate" type="number" step="0.01" placeholder="0" oninput="calcBillSummary()" style="border:1px solid #e2e8f0;border-radius:5px;padding:4px 6px;width:90px;text-align:right"></td><td style="padding:5px 8px"><input class="bill-tax" type="number" step="0.01" value="0" placeholder="%" oninput="calcBillSummary()" style="border:1px solid #e2e8f0;border-radius:5px;padding:4px 6px;width:55px;text-align:center"></td><td style="padding:5px 8px;text-align:center"><span class="bill-taxamt" style="font-size:.78rem;color:var(--amber)">₹0</span></td><td style="padding:5px 8px;text-align:center"><strong class="bill-linetotal" style="color:var(--teal)">₹0</strong></td><td style="padding:5px 8px;text-align:center"><button onclick="this.closest('tr').remove();calcBillSummary()" style="background:none;border:none;cursor:pointer;color:var(--rose);font-size:1rem">✕</button></td>`;
+  tbody.appendChild(tr);
+  calcBillSummary();
+}
+function calcBillSummary(){
+  let subtotal=0,totaltax=0;
+  document.querySelectorAll('#billItemsBody tr').forEach(tr=>{
+    const qty=+tr.querySelector('.bill-qty')?.value||0;
+    const rate=+tr.querySelector('.bill-rate')?.value||0;
+    const tax=+tr.querySelector('.bill-tax')?.value||0;
+    const base=qty*rate; const taxamt=base*tax/100; const total=base+taxamt;
+    subtotal+=base; totaltax+=taxamt;
+    const ta=tr.querySelector('.bill-taxamt'); if(ta) ta.textContent='₹'+taxamt.toFixed(2);
+    const lt=tr.querySelector('.bill-linetotal'); if(lt) lt.textContent='₹'+total.toFixed(2);
+  });
+  const grand=subtotal+totaltax;
+  const paid=+document.getElementById('bill_paidamt')?.value||0;
+  const set=(id,v)=>{ const el=document.getElementById(id); if(el) el.textContent=v; };
+  set('bill_subtotal','₹'+subtotal.toFixed(2)); set('bill_totaltax','₹'+totaltax.toFixed(2));
+  set('bill_grandtotal','₹'+grand.toFixed(2)); set('bill_rcTotal','₹'+grand.toFixed(2));
+  set('bill_rcPaid','₹'+paid.toFixed(2)); set('bill_rcDue','₹'+(grand-paid).toFixed(2));
+}
+function saveBill(){
+  const vendor=document.getElementById('bill_vendor').value.trim();
+  const date=document.getElementById('bill_date').value;
+  if(!vendor||!date){ toast('Date and Vendor required','error'); return; }
+  const lineItems=[];
+  document.querySelectorAll('#billItemsBody tr').forEach(tr=>{
+    const itemname=tr.querySelector('.bill-itemname')?.value?.trim();
+    if(!itemname) return;
+    const qty=+tr.querySelector('.bill-qty')?.value||0;
+    const rate=+tr.querySelector('.bill-rate')?.value||0;
+    const tax=+tr.querySelector('.bill-tax')?.value||0;
+    const base=qty*rate, taxamt=base*tax/100;
+    lineItems.push({itemgroup:tr.querySelector('.bill-itemgroup')?.value||'',itemname,qty,rate,tax,taxamt:taxamt.toFixed(2),total:(base+taxamt).toFixed(2)});
+  });
+  if(!lineItems.length){ toast('Add at least one line item','error'); return; }
+  const grand=lineItems.reduce((s,i)=>s+(+i.total||0),0);
+  const paid=+document.getElementById('bill_paidamt').value||0;
+  const rec={id:document.getElementById('bill_editId').value||uid(),date,vendor,invoiceno:document.getElementById('bill_invoiceno').value,paidamt:paid,remarks:document.getElementById('bill_remarks').value,items:lineItems,grandtotal:grand.toFixed(2),due:(grand-paid).toFixed(2)};
+  const idx=DB.bills.findIndex(b=>b.id===rec.id);
+  if(idx>=0){ DB.bills[idx]=rec; toast('Bill updated','success'); }
+  else{ DB.bills.push(rec); toast('Bill saved — '+lineItems.length+' item(s)','success'); }
+  save('bills'); closeModal('modalExpense'); renderAll();
+}
+function toggleBillItems(id){ const r=document.getElementById('billDetail_'+id); if(r) r.style.display=r.style.display==='none'?'table-row':'none'; }
+function editBill(id){
+  const b=DB.bills.find(x=>x.id===id); if(!b) return;
+  openModal('modalExpense','Edit Bill',true);
+  const fset=(eid,v)=>{ const el=document.getElementById(eid); if(el) el.value=v||''; };
+  fset('bill_date',b.date); fset('bill_vendor',b.vendor); fset('bill_invoiceno',b.invoiceno);
+  fset('bill_paidamt',b.paidamt); fset('bill_remarks',b.remarks); fset('bill_editId',b.id);
+  const tbody=document.getElementById('billItemsBody'); tbody.innerHTML='';
+  (Array.isArray(b.items) ? b.items : []).forEach(item=>{
+    addBillItem();
+    const trs=tbody.querySelectorAll('tr'); const tr=trs[trs.length-1];
+    const g=tr.querySelector('.bill-itemgroup'); if(g) g.value=item.itemgroup||'';
+    const n=tr.querySelector('.bill-itemname'); if(n) n.value=item.itemname||'';
+    const q=tr.querySelector('.bill-qty'); if(q) q.value=item.qty||1;
+    const r=tr.querySelector('.bill-rate'); if(r) r.value=item.rate||0;
+    const t=tr.querySelector('.bill-tax'); if(t) t.value=item.tax||0;
+  });
+  calcBillSummary();
+}
+function delBill(id){ if(!confirm('Delete this bill?')) return; DB.bills=DB.bills.filter(b=>b.id!==id); save('bills'); renderAll(); toast('Deleted','error'); }
+function saveExpense(){ saveBill(); }
+function calcExpenseTotal(){ calcBillSummary(); }
+
+// ── RENDER ALL
+function renderAll(){
+  renderDashboard(); renderPatients(); renderCycles(); renderTracker(); renderSchedule(); renderPayments(); renderEmbryo(); renderObs(); renderReports(); renderExpenses();
+}
+
+// ── RENDER DASHBOARD
+function renderDashboard(){
+  const today=todayStr();
+  const now=new Date();
+
+  // Phase counts
+  const inStim=DB.cycles.filter(c=>c.cancelled!=='Y'&&c.stimdate&&!c.opudate).length;
+  const inEtPrep=DB.cycles.filter(c=>c.cancelled!=='Y'&&c.etprepdate&&!c.etdate).length;
+  const opuToday=DB.cycles.filter(c=>c.opudate===today&&c.cancelled!=='Y').length;
+  const etToday=DB.cycles.filter(c=>c.etdate===today&&c.cancelled!=='Y').length;
+  const betaToday=DB.cycles.filter(c=>c.betadate===today&&c.cancelled!=='Y').length;
+  const cancelled=DB.cycles.filter(c=>c.cancelled==='Y'&&c.stimdate&&c.stimdate.slice(0,7)===today.slice(0,7)).length;
+
+  const phases=[
+    {label:'In Stimulation',count:inStim,cls:'stim'},
+    {label:'In ET Prep',count:inEtPrep,cls:'etprep'},
+    {label:'OPU Today',count:opuToday,cls:'opu'},
+    {label:'ET Today',count:etToday,cls:'et'},
+    {label:'β-hCG Today',count:betaToday,cls:'beta'},
+    {label:'Cancelled (mo)',count:cancelled,cls:'cancel'},
+  ];
+  document.getElementById('phaseStrip').innerHTML=phases.map(p=>`<div class="phase-card phase-${p.cls}"><div class="pc-count">${p.count}</div><div class="pc-label">${p.label}</div></div>`).join('');
+
+  // Today's procedures
+  const todayCycles=DB.cycles.filter(c=>(c.opudate===today||c.etdate===today)&&c.cancelled!=='Y');
+  const tbody=document.querySelector('#dashTodayTable tbody');
+  if(!todayCycles.length){ tbody.innerHTML=`<tr><td colspan="4" class="tbl-empty">No procedures today</td></tr>`; }
+  else tbody.innerHTML=todayCycles.map(c=>{
+    const proc=c.opudate===today?'OPU / Pick-Up':'Transfer (ET/FET)';
+    const time=c.opudate===today?fmtTime(c.oputime):fmtTime(c.ettime);
+    const st=cycleStatus(c);
+    return `<tr><td><strong>${getPatientName(c.patid)}</strong><br><span class="text-muted">${c.patid}</span></td><td>${proc}</td><td><strong>${time||'—'}</strong></td><td>${statusBadge(st)}</td></tr>`;
+  }).join('');
+
+  // Beta today
+  const betaCycles=DB.cycles.filter(c=>c.betadate===today&&c.cancelled!=='Y');
+  const bbody=document.querySelector('#dashBetaTable tbody');
+  if(!betaCycles.length){ bbody.innerHTML=`<tr><td colspan="3" class="tbl-empty">No beta tests today</td></tr>`; }
+  else bbody.innerHTML=betaCycles.map(c=>`<tr class="alert-amber"><td><strong>${getPatientName(c.patid)}</strong> <span class="text-muted">${c.patid}</span></td><td>${fmtDate(c.etdate)}</td><td>Cycle ${c.cycno} Att ${c.attempt}</td></tr>`).join('');
+
+  // In stimulation
+  const stimCycles=DB.cycles.filter(c=>c.cancelled!=='Y'&&c.stimdate&&!c.opudate);
+  const sbody=document.querySelector('#dashStimTable tbody');
+  if(!stimCycles.length) sbody.innerHTML=`<tr><td colspan="3" class="tbl-empty">None</td></tr>`;
+  else sbody.innerHTML=stimCycles.map(c=>{ const day=diffDays(c.stimdate,today)+1; return `<tr><td><strong>${getPatientName(c.patid)}</strong> <span class="text-muted">${c.patid}</span></td><td>${fmtDate(c.stimdate)}</td><td><span class="badge badge-ongoing">Day ${day}</span></td></tr>`; }).join('');
+
+  // In ET prep
+  const etpCycles=DB.cycles.filter(c=>c.cancelled!=='Y'&&c.etprepdate&&!c.etdate);
+  const epbody=document.querySelector('#dashEtprepTable tbody');
+  if(!etpCycles.length) epbody.innerHTML=`<tr><td colspan="3" class="tbl-empty">None</td></tr>`;
+  else epbody.innerHTML=etpCycles.map(c=>{ const day=diffDays(c.etprepdate,today)+1; return `<tr><td><strong>${getPatientName(c.patid)}</strong> <span class="text-muted">${c.patid}</span></td><td>${fmtDate(c.etprepdate)}</td><td><span class="badge badge-planned">Day ${day}</span></td></tr>`; }).join('');
+
+  // Payment dues
+  const duesPatients=DB.patients.filter(p=>getBalance(p.id)>0);
+  const pbody=document.querySelector('#dashPayTable tbody');
+  if(!duesPatients.length) pbody.innerHTML=`<tr><td colspan="4" class="tbl-empty">No outstanding dues</td></tr>`;
+  else pbody.innerHTML=duesPatients.slice(0,8).map(p=>{ const bal=getBalance(p.id); return `<tr class="${bal>50000?'alert-row':''}"><td><strong>${p.name}</strong> <span class="text-muted">${p.id}</span></td><td>${inr(getPackage(p.id))}</td><td>${inr(getTotalPaid(p.id))}</td><td class="text-red fw600">${inr(bal)}</td></tr>`; }).join('');
+
+  // Obstetric follow-up
+  const obsDue=DB.obstetric.filter(o=>{ if(o.outcome!=='Ongoing Pregnancy') return false; if(!o.lastentry) return true; return diffDays(o.lastentry,today)>30||(o.followup&&o.followup<=today); });
+  const obody=document.querySelector('#dashObsTable tbody');
+  if(!obsDue.length) obody.innerHTML=`<tr><td colspan="3" class="tbl-empty">All up to date</td></tr>`;
+  else obody.innerHTML=obsDue.map(o=>{ const lmp=getLMP(o.patid); return `<tr class="alert-amber"><td><strong>${getPatientName(o.patid)}</strong> <span class="text-muted">${o.patid}</span></td><td>${lmp?getGA(lmp):'?'}</td><td>${o.lastentry?fmtDate(o.lastentry):'Never'}</td></tr>`; }).join('');
+
+  // Storage renewals
+  const storDue=DB.embryo.filter(e=>{ if(!e.renewal) return false; const days=diffDays(today,e.renewal); return days<=30; });
+  const stbody=document.querySelector('#dashStorageTable tbody');
+  if(!storDue.length) stbody.innerHTML=`<tr><td colspan="6" class="tbl-empty">No renewals due in 30 days</td></tr>`;
+  else stbody.innerHTML=storDue.map(e=>{ const days=diffDays(today,e.renewal); const cls=days<0?'alert-row':days<=7?'alert-amber':''; return `<tr class="${cls}"><td><strong>${getPatientName(e.patid)}</strong> <span class="text-muted">${e.patid}</span></td><td>${e.total||0}</td><td>${e.vial||'—'}</td><td>${fmtDate(e.renewal)}</td><td class="${days<0?'text-red':'text-amber'} fw600">${days<0?'EXPIRED':days+' days'}</td><td class="text-red fw600">${inr(e.feedue)}</td></tr>`; }).join('');
+
+  // ── Overdue Visits (patient nextvisit OR cycle nextvisit < today)
+  const overdueRows=[];
+  DB.patients.forEach(p=>{
+    if(p.nextvisit && p.nextvisit<today){
+      const d=Math.abs(diffDays(p.nextvisit,today));
+      overdueRows.push({name:p.name,id:p.id,mobile:p.mobile,section:'Patient Register',date:p.nextvisit,days:d});
+    }
+  });
+  DB.cycles.forEach(c=>{
+    if(c.nextvisit && c.nextvisit<today && c.cancelled!=='Y'){
+      const d=Math.abs(diffDays(c.nextvisit,today));
+      overdueRows.push({name:getPatientName(c.patid),id:c.patid,mobile:'',section:`Cycle ${c.cycno} Att ${c.attempt}`,date:c.nextvisit,days:d});
+    }
+  });
+  overdueRows.sort((a,b)=>b.days-a.days);
+  const ovbody=document.querySelector('#dashOverdueVisitsTable tbody');
+  if(!overdueRows.length) ovbody.innerHTML=`<tr><td colspan="4" class="tbl-empty">No overdue visits</td></tr>`;
+  else ovbody.innerHTML=overdueRows.map(r=>`<tr class="alert-row"><td><strong>${r.name}</strong> <span class="text-muted">${r.id}</span></td><td>${r.section}</td><td>${fmtDate(r.date)}</td><td class="text-red fw600">${r.days} days overdue</td></tr>`).join('');
+
+  // ── Upcoming Visits (next 7 days)
+  const upcomingRows=[];
+  DB.patients.forEach(p=>{
+    if(p.nextvisit){
+      const d=diffDays(today,p.nextvisit);
+      if(d>=0&&d<=7) upcomingRows.push({name:p.name,id:p.id,section:'Patient Register',date:p.nextvisit,days:d});
+    }
+  });
+  DB.cycles.forEach(c=>{
+    if(c.nextvisit && c.cancelled!=='Y'){
+      const d=diffDays(today,c.nextvisit);
+      if(d>=0&&d<=7) upcomingRows.push({name:getPatientName(c.patid),id:c.patid,section:`Cycle ${c.cycno} Att ${c.attempt}`,date:c.nextvisit,days:d});
+    }
+  });
+  upcomingRows.sort((a,b)=>a.days-b.days);
+  const upbody=document.querySelector('#dashUpcomingVisitsTable tbody');
+  if(!upcomingRows.length) upbody.innerHTML=`<tr><td colspan="4" class="tbl-empty">No visits in the next 7 days</td></tr>`;
+  else upbody.innerHTML=upcomingRows.map(r=>`<tr class="alert-green"><td><strong>${r.name}</strong> <span class="text-muted">${r.id}</span></td><td>${r.section}</td><td>${fmtDate(r.date)}</td><td class="${r.days===0?'text-red fw600':'text-amber fw600'}">${r.days===0?'TODAY':r.days+' days'}</td></tr>`).join('');
+
+  // ── Lost Patients (no activity > 60 days across all sections)
+  // "Last activity" = max of: regdate, lastvisit (patient), latest cycle date, latest payment date, obs lastentry, cycle lastvisit
+  const cutoff=addDays(today,-60);
+  const lostRows=[];
+  DB.patients.forEach(p=>{
+    const pid=String(p.id);
+    const dates=[];
+    if(p.regdate) dates.push(p.regdate);
+    if(p.lastvisit) dates.push(p.lastvisit);
+    // Cycle dates
+    DB.cycles.filter(c=>String(c.patid)===pid).forEach(c=>{
+      ['stimdate','opudate','etprepdate','etdate','betadate','lastvisit'].forEach(k=>{ if(c[k]) dates.push(c[k]); });
+    });
+    // Payment dates
+    DB.payments.filter(pm=>String(pm.patid)===pid).forEach(pm=>{ if(pm.date) dates.push(pm.date); });
+    // Obstetric lastentry
+    DB.obstetric.filter(o=>String(o.patid)===pid).forEach(o=>{ if(o.lastentry) dates.push(o.lastentry); });
+    if(!dates.length) return;
+    const validDates=dates.map(d=>toISODate(d)).filter(Boolean);
+    if(!validDates.length) return;
+    validDates.sort();
+    const lastDate=validDates[validDates.length-1];
+    if(lastDate<cutoff){
+      const daysSince=diffDays(lastDate,today);
+      // Determine which section had the last activity
+      let lastSection='Registration';
+      let maxD=p.regdate||'';
+      DB.cycles.filter(c=>String(c.patid)===pid).forEach(c=>{
+        ['stimdate','opudate','etdate','lastvisit'].forEach(k=>{ if(c[k]&&c[k]>maxD){ maxD=c[k]; lastSection=`Cycle ${c.cycno}`; }});
+      });
+      DB.payments.filter(pm=>String(pm.patid)===pid).forEach(pm=>{ if(pm.date&&pm.date>maxD){ maxD=pm.date; lastSection='Payment'; }});
+      DB.obstetric.filter(o=>String(o.patid)===pid).forEach(o=>{ if(o.lastentry&&o.lastentry>maxD){ maxD=o.lastentry; lastSection='Obstetric'; }});
+      if(p.lastvisit&&p.lastvisit>maxD){ maxD=p.lastvisit; lastSection='Patient Visit'; }
+      lostRows.push({name:p.name,id:p.id,mobile:p.mobile||'—',lastDate,daysSince,lastSection});
+    }
+  });
+  lostRows.sort((a,b)=>b.daysSince-a.daysSince);
+  const lbody=document.querySelector('#dashLostPatientsTable tbody');
+  if(!lostRows.length) lbody.innerHTML=`<tr><td colspan="5" class="tbl-empty">No lost patients — all patients seen within 2 months 👍</td></tr>`;
+  else lbody.innerHTML=lostRows.map(r=>`<tr class="alert-row"><td><strong>${r.name}</strong> <span class="text-muted">${r.id}</span></td><td>${r.mobile}</td><td>${fmtDate(r.lastDate)}</td><td class="text-red fw600">${r.daysSince} days</td><td><span class="chip">${r.lastSection}</span></td></tr>`).join('');
+}
+
+// ── RENDER PATIENTS
+function renderPatients(){
+  const q=(document.getElementById('patSearch')?.value||'').toLowerCase();
+  const rows=DB.patients.filter(p=>!q||p.name.toLowerCase().includes(q)||String(p.id).includes(q));
+  const tbody=document.querySelector('#patTable tbody');
+  const today=todayStr();
+  if(!rows.length){ tbody.innerHTML=`<tr><td colspan="14" class="tbl-empty">No patients yet. Add one to get started.</td></tr>`; return; }
+  tbody.innerHTML=rows.map(p=>{
+    const hivStatus=(v)=>v==='Positive'?`<span class="text-red fw600">${v}</span>`:v==='Negative'?`<span style="color:var(--sage)">${v}</span>`:(v||'—');
+    const sfBadge = p.semen_freezing==='Yes'
+      ? `<span class="badge badge-completed">Yes</span>`
+      : `<span class="badge" style="background:#f0f0f0;color:#718096">No</span>`;
+    // Next visit highlighting
+    let rowcls='';
+    let nvCell='—', lvCell=p.lastvisit?fmtDate(p.lastvisit):'—';
+    if(p.nextvisit){
+      const daysTo=diffDays(today,p.nextvisit);
+      if(daysTo<0){ rowcls='alert-row'; nvCell=`<span class="text-red fw600">⚠ ${fmtDate(p.nextvisit)}<br><span style="font-size:.7rem">Overdue ${Math.abs(daysTo)}d</span></span>`; }
+      else if(daysTo<=7){ rowcls='alert-amber'; nvCell=`<span class="text-amber fw600">📅 ${fmtDate(p.nextvisit)}<br><span style="font-size:.7rem">In ${daysTo}d</span></span>`; }
+      else { nvCell=fmtDate(p.nextvisit); }
+    }
+    return `<tr class="${rowcls}">
+      <td class="fw600 text-teal">${p.id}</td>
+      <td><strong>${p.name}</strong>${p.notes?`<br><span class="text-muted">${p.notes}</span>`:''}
+      </td>
+      <td>${p.mobile||'—'}</td>
+      <td>${p.bgf||'—'} / ${p.bgm||'—'}</td>
+      <td>${p.hb||'—'}</td>
+      <td>${hivStatus(p.hiv_f)} / ${hivStatus(p.hbsag_f)} / ${hivStatus(p.hcv_f)}</td>
+      <td>${p.amh||'—'}</td>
+      <td>${p.sperm_count||'—'}</td>
+      <td>${p.sperm_motility||'—'}</td>
+      <td>${sfBadge}</td>
+      <td>${fmtDate(p.regdate)}</td>
+      <td>${lvCell}</td>
+      <td>${nvCell}</td>
+      <td><button class="btn btn-secondary btn-sm btn-icon" onclick="editPatient('${p.id}')">✏️</button> <button class="btn btn-danger btn-sm btn-icon" onclick="delPatient('${p.id}')">🗑</button></td>
+    </tr>`;
+  }).join('');
+}
+
+// ── RENDER CYCLES
+function renderCycles(){
+  const q=(document.getElementById('cycleSearch')?.value||'').toLowerCase();
+  const sf=document.getElementById('cycleStatusFilter')?.value||'';
+  const today=todayStr();
+  let rows=DB.cycles.filter(c=>{
+    const nm=getPatientName(c.patid).toLowerCase();
+    if(q&&!nm.includes(q)&&!String(c.patid).includes(q)) return false;
+    if(sf&&cycleStatus(c)!==sf) return false;
+    return true;
+  });
+  const tbody=document.querySelector('#cycleTable tbody');
+  if(!rows.length){ tbody.innerHTML=`<tr><td colspan="28" class="tbl-empty">No cycle entries yet.</td></tr>`; return; }
+  tbody.innerHTML=rows.map(c=>{
+    const st=cycleStatus(c);
+    const paid=getTotalPaid(c.patid); const pkg=+c.package||0; const bal=getBalance(c.patid);
+    let rowcls=c.cancelled==='Y'?'alert-row':'';
+    let nvCell='—', lvCell=c.lastvisit?fmtDate(c.lastvisit):'—';
+    if(c.nextvisit && c.cancelled!=='Y'){
+      const daysTo=diffDays(today,c.nextvisit);
+      if(daysTo<0){ if(!rowcls) rowcls='alert-row'; nvCell=`<span class="text-red fw600">⚠ ${fmtDate(c.nextvisit)}<br><span style="font-size:.7rem">Overdue ${Math.abs(daysTo)}d</span></span>`; }
+      else if(daysTo<=7){ if(!rowcls) rowcls='alert-amber'; nvCell=`<span class="text-amber fw600">📅 ${fmtDate(c.nextvisit)}<br><span style="font-size:.7rem">In ${daysTo}d</span></span>`; }
+      else { nvCell=fmtDate(c.nextvisit); }
+    }
+    return `<tr class="${rowcls}">
+      <td><strong>${getPatientName(c.patid)}</strong><br><span class="text-muted">${c.patid}</span></td>
+      <td>${c.cycno}</td><td>${c.attempt}</td><td>${c.type||'—'}</td><td>${c.protocol||'—'}</td>
+      <td>${fmtDate(c.stimdate)||'—'}</td><td>${fmtDate(c.opudate)||'—'}</td><td>${fmtTime(c.oputime)||'—'}</td>
+      <td>${c.created||'—'}</td><td>${fmtDate(c.etprepdate)||'—'}</td>
+      <td>${fmtDate(c.etdate)||'—'}</td><td>${fmtTime(c.ettime)||'—'}</td>
+      <td>${c.transferred||'—'}</td><td>${c.before||'—'}</td><td>${c.remaining||'—'}</td>
+      <td>${fmtDate(c.betadate)||'—'}</td><td>${betaBadge(c.betaresult)||'—'}</td><td>${fmtDate(c.lmp)||'—'}</td>
+      <td>${inr(c.package)}</td><td class="text-green">${inr(paid)}</td><td class="${bal>0?'text-red':''} fw600">${inr(bal)}</td>
+      <td>${lvCell}</td><td>${nvCell}</td>
+      <td>${c.injbrand||'—'}</td><td>${c.clinrmk||'—'}</td>
+      <td>${statusBadge(st)}</td><td>${c.cancelled==='Y'?'<span class="badge badge-cancelled">YES</span>':'No'}</td>
+      <td><button class="btn btn-secondary btn-sm btn-icon" onclick="editCycle('${c.id}')">✏️</button> <button class="btn btn-danger btn-sm btn-icon" onclick="delCycle('${c.id}')">🗑</button></td>
+    </tr>`;
+  }).join('');
+}
+
+// ── RENDER TRACKER
+function renderTracker(){
+  const tbody=document.querySelector('#trackerTable tbody');
+  if(!DB.cycles.length){ tbody.innerHTML=`<tr><td colspan="13" class="tbl-empty">No cycle data</td></tr>`; return; }
+  tbody.innerHTML=DB.cycles.map(c=>{
+    const st=cycleStatus(c);
+    const rowcls=c.cancelled==='Y'?'style="background:var(--rose4)"':st==='Ongoing'?'style="background:#fff3e0"':st==='Planned'?'style="background:#e3f2fd"':st==='Completed'?'style="background:var(--sage4)"':'';
+    return `<tr ${rowcls}>
+      <td class="fw600 text-teal">${c.patid}</td>
+      <td><strong>${getPatientName(c.patid)}</strong></td>
+      <td>${c.cycno}</td><td>${c.attempt}</td>
+      <td style="color:var(--stim);font-weight:600">${fmtDate(c.stimdate)||'—'}</td>
+      <td style="color:#006064;font-weight:600">${fmtDate(c.opudate)||'—'}</td>
+      <td>${fmtTime(c.oputime)||'—'}</td>
+      <td style="color:var(--etprep);font-weight:600">${fmtDate(c.etprepdate)||'—'}</td>
+      <td style="color:var(--sage);font-weight:600">${fmtDate(c.etdate)||'—'}</td>
+      <td>${fmtTime(c.ettime)||'—'}</td><td>${c.type||'—'}</td>
+      <td>${statusBadge(st)}</td>
+      <td>${c.cancelled==='Y'?'<span class="badge badge-cancelled">YES</span>':'—'}</td>
+    </tr>`;
+  }).join('');
+}
+
+// ── RENDER SCHEDULE
+function renderSchedule(){
+  const dt=document.getElementById('scheduleDate')?.value||todayStr();
+  const rows=DB.cycles.filter(c=>(c.opudate===dt||c.etdate===dt)&&c.cancelled!=='Y');
+  const tbody=document.querySelector('#schedTable tbody');
+  if(!rows.length) tbody.innerHTML=`<tr><td colspan="4" class="tbl-empty">No procedures on this date</td></tr>`;
+  else tbody.innerHTML=rows.map(c=>{
+    const isOpu=c.opudate===dt; const proc=isOpu?'OPU / Pick-Up':'Transfer (ET/FET)';
+    const time=isOpu?fmtTime(c.oputime):fmtTime(c.ettime); const st=cycleStatus(c);
+    return `<tr><td><strong>${getPatientName(c.patid)}</strong> <span class="text-muted">${c.patid}</span></td><td>${proc}</td><td><strong>${time||'—'}</strong></td><td>${statusBadge(st)}</td></tr>`;
+  }).join('');
+
+  const betaRows=DB.cycles.filter(c=>c.betadate===dt&&c.cancelled!=='Y');
+  const btbody=document.querySelector('#schedBetaTable tbody');
+  if(!betaRows.length) btbody.innerHTML=`<tr><td colspan="3" class="tbl-empty">No beta tests</td></tr>`;
+  else btbody.innerHTML=betaRows.map(c=>`<tr class="alert-amber"><td><strong>${getPatientName(c.patid)}</strong></td><td>${fmtDate(c.etdate)}</td><td>Cycle ${c.cycno}</td></tr>`).join('');
+
+  const storRows=DB.embryo.filter(e=>e.renewal&&Math.abs(diffDays(dt,e.renewal))<=3);
+  const stbody=document.querySelector('#schedStorTable tbody');
+  if(!storRows.length) stbody.innerHTML=`<tr><td colspan="3" class="tbl-empty">No renewals around this date</td></tr>`;
+  else stbody.innerHTML=storRows.map(e=>{ const d=diffDays(dt,e.renewal); return `<tr class="${d<=0?'alert-row':'alert-amber'}"><td><strong>${getPatientName(e.patid)}</strong></td><td>${fmtDate(e.renewal)}</td><td class="${d<0?'text-red':'text-amber'} fw600">${d<0?'EXPIRED':d+' days'}</td></tr>`; }).join('');
+}
+
+// ── RENDER PAYMENTS
+function renderPayments(){
+  const q=(document.getElementById('pmtSearch')?.value||'').toLowerCase();
+  const cf=(document.getElementById('pmtClearedFilter')?.value||'');
+
+  // ── Summary cards (always computed on full dataset)
+  const totalCollected=DB.payments.reduce((s,p)=>s+(+p.amount||0),0);
+  const totalPackages=DB.patients.reduce((s,p)=>s+getTotalPackage(p.id),0);
+  const totalOutstanding=DB.patients.reduce((s,p)=>{ const b=getBalance(p.id); return s+(b>0?b:0); },0);
+  const clearedCount=DB.payments.filter(p=>p.cleared==='Yes').length;
+  const partialCount=DB.payments.filter(p=>p.cleared==='Partial').length;
+  const noneCount=DB.patients.filter(p=>!DB.payments.some(pm=>String(pm.patid)===String(p.id))).length;
+  const cards=document.getElementById('pmtSummaryCards');
+  if(cards) cards.innerHTML=[
+    {label:'Total Collected',val:inr(totalCollected),color:'--sage',sub:'all payments'},
+    {label:'Total Outstanding',val:inr(totalOutstanding),color:'--rose',sub:'across all patients'},
+    {label:'Cleared / Partial',val:`${clearedCount} / ${partialCount}`,color:'--teal',sub:'payment records'},
+    {label:'No Payment Yet',val:noneCount,color:'--amber',sub:'patients with ₹0 paid'},
+  ].map(c=>`<div style="background:var(--white);border-radius:var(--radius);box-shadow:var(--shadow);padding:14px 16px;border-top:3px solid var(${c.color})"><div style="font-size:1.4rem;font-weight:700;color:var(${c.color});line-height:1.1">${c.val}</div><div style="font-size:.72rem;font-weight:600;text-transform:uppercase;letter-spacing:.4px;color:var(--ink4);margin-top:4px">${c.label}</div><div style="font-size:.7rem;color:var(--ink4)">${c.sub}</div></div>`).join('');
+
+  // "none" = patients with no payment records at all — show synthetic rows
+  if(cf==='none'){
+    const tbody=document.querySelector('#pmtTable tbody');
+    const patsNoPayment=DB.patients.filter(p=>!DB.payments.some(pm=>String(pm.patid)===String(p.id)));
+    const filtered=patsNoPayment.filter(p=>!q||p.name.toLowerCase().includes(q)||String(p.id).includes(q));
+    if(!filtered.length){ tbody.innerHTML=`<tr><td colspan="11" class="tbl-empty">All patients have at least one payment record.</td></tr>`; return; }
+    tbody.innerHTML=filtered.map(p=>{
+      const pkg=getTotalPackage(p.id);
+      return `<tr class="alert-row"><td><strong>${p.name}</strong><br><span class="text-muted">${p.id}</span></td><td>—</td><td>—</td><td>${inr(pkg)}</td><td class="text-red fw600">₹0</td><td class="text-red fw600">${inr(pkg)}</td><td>—</td><td>—</td><td>—</td><td><span class="badge badge-cancelled">No Payment</span></td><td></td></tr>`;
+    }).join('');
+    return;
+  }
+  let rows=DB.payments.filter(p=>{
+    if(q&&!getPatientName(p.patid).toLowerCase().includes(q)&&!String(p.patid).includes(q)) return false;
+    if(cf&&p.cleared!==cf) return false;
+    return true;
+  });
+  const tbody=document.querySelector('#pmtTable tbody');
+  if(!rows.length){ tbody.innerHTML=`<tr><td colspan="11" class="tbl-empty">No payments match the filter.</td></tr>`; return; }
+  tbody.innerHTML=rows.map(p=>{
+    const bal=getBalance(p.patid);
+    const balCell=bal>0?`<span class="text-red fw600">${inr(bal)}</span>`:`<span class="text-green fw600">${inr(0)} ✓</span>`;
+    return `<tr class="${p.cleared==='No'?'alert-amber':p.cleared==='Partial'?'alert-amber':''}"><td><strong>${getPatientName(p.patid)}</strong><br><span class="text-muted">${p.patid}</span></td><td>${fmtDate(p.date)}</td><td>${p.receipt||'—'}</td><td>${inr(p.package)}</td><td class="text-green fw600">${inr(p.amount)}</td><td>${balCell}</td><td>${p.method||'—'}</td><td>${p.category||'—'}</td><td>${p.remarks||'—'}</td><td><span class="badge badge-${p.cleared==='Yes'?'completed':p.cleared==='Partial'?'planned':'cancelled'}">${p.cleared||'—'}</span></td><td><button class="btn btn-secondary btn-sm btn-icon" onclick="editPayment('${p.id}')">✏️</button> <button class="btn btn-danger btn-sm btn-icon" onclick="delPayment('${p.id}')">🗑</button></td></tr>`;
+  }).join('');
+}
+
+// ── RENDER EMBRYO
+function renderEmbryo(){
+  // Restore saved server base
+  const saved=localStorage.getItem('cc_imgbase');
+  const srvEl=document.getElementById('imgServerBase');
+  if(saved&&srvEl&&!srvEl.value) srvEl.value=saved;
+  const q=(document.getElementById('embryoSearch')?.value||'').toLowerCase().trim();
+  const sf=document.getElementById('embryoStatusFilter')?.value||'';
+  const tbody=document.querySelector('#embryoTable tbody');
+  const today=todayStr();
+  if(!DB.embryo.length){ tbody.innerHTML=`<tr><td colspan="25" class="tbl-empty">No embryo storage entries.</td></tr>`; return; }
+  const rows=DB.embryo.filter(e=>{
+    if(q){
+      const name=getPatientName(e.patid).toLowerCase();
+      const id=String(e.patid).toLowerCase();
+      if(!name.includes(q)&&!id.includes(q)) return false;
+    }
+    if(sf&&e.status!==sf) return false;
+    return true;
+  });
+  if(!rows.length){ tbody.innerHTML=`<tr><td colspan="25" class="tbl-empty">No entries match your search.</td></tr>`; return; }
+  tbody.innerHTML=rows.map(e=>{
+    const daysLeft=e.renewal?diffDays(today,e.renewal):null;
+    const cls=daysLeft!==null&&daysLeft<=0?'alert-row':daysLeft!==null&&daysLeft<=30?'alert-amber':'';
+    const feedue=(+e.fee||0)-(+e.feepaid||0);
+    const tc=(o)=>o?`<span class="badge badge-${o==='Positive'?'positive':o==='Negative'?'negative':'planned'}">${o}</span>`:'—';
+    return `<tr class="${cls}"><td><strong>${getPatientName(e.patid)}</strong><br><span class="text-muted">${e.patid}</span></td><td class="fw600">${e.total||0}</td><td>${e.grade||'—'}</td><td>${fmtDate(e.startdate)}</td><td>${fmtDate(e.renewal)}</td><td class="${daysLeft!==null&&daysLeft<=0?'text-red':daysLeft!==null&&daysLeft<=30?'text-amber':''} fw600">${daysLeft===null?'—':daysLeft<=0?'EXPIRED':daysLeft+' days'}</td><td>${inr(e.fee)}</td><td>${inr(e.feepaid)}</td><td class="${feedue>0?'text-red':''} fw600">${inr(feedue)}</td><td><span class="badge badge-storage">${e.status||'—'}</span></td><td>${e.vial||'—'}</td><td>${fmtDate(e.t1date)||'—'}</td><td>${e.t1qty||0}</td><td>${e.t1grade||'—'}</td><td>${tc(e.t1outcome)}</td><td>${fmtDate(e.t2date)||'—'}</td><td>${e.t2qty||0}</td><td>${tc(e.t2outcome)}</td><td>${fmtDate(e.t3date)||'—'}</td><td>${e.t3qty||0}</td><td>${tc(e.t3outcome)}</td><td>${e.discarded||0}</td><td class="fw600 ${+e.remaining>0?'text-teal':''}">${e.remaining||0}</td><td>${e.oocimg?`<button class="btn btn-secondary btn-sm btn-icon" onclick="openImgViewer(\`${e.oocimg}\`)" title="View Oocyte Image">🥚</button>`:'—'}</td><td>${e.embimg?`<button class="btn btn-secondary btn-sm btn-icon" onclick="openImgViewer(\`${e.embimg}\`)" title="View Embryo Image">🔬</button>`:'—'}</td><td><button class="btn btn-secondary btn-sm btn-icon" onclick="editEmbryo('${e.id}')">✏️</button> <button class="btn btn-danger btn-sm btn-icon" onclick="delEmbryo('${e.id}')">🗑</button></td></tr>`;
+  }).join('');
+}
+
+// ── RENDER OBS
+function renderObs(){
+  const tbody=document.querySelector('#obsTable tbody');
+  const today=todayStr();
+  if(!DB.obstetric.length){ tbody.innerHTML=`<tr><td colspan="14" class="tbl-empty">No obstetric entries.</td></tr>`; return; }
+  tbody.innerHTML=DB.obstetric.map(o=>{
+    const lmp=getLMP(o.patid);
+    const edd=lmp?getEDD(lmp):'';
+    const ga=lmp?getGA(lmp):'?';
+    const bal=getBalance(o.patid);
+    const renewal=getStorageRenewal(o.patid);
+    const daysLast=o.lastentry?diffDays(o.lastentry,today):999;
+    const hasPositiveBeta=DB.cycles.some(c=>String(c.patid)===String(o.patid)&&c.betaresult==='Positive');
+    // Orange warning row if no Positive beta in Cycle Log — entry added directly
+    let rowStyle='';
+    if(!hasPositiveBeta) rowStyle='style="background:#fff8e1;border-left:4px solid #f57f17"';
+    else if(o.outcome==='Ongoing Pregnancy'&&daysLast>30) rowStyle='class="alert-amber"';
+    const incompleteWarn=!hasPositiveBeta?'<br><span style="font-size:.68rem;color:#e65100;font-weight:700">⚠ Add β-hCG Positive in Cycle Log</span>':'';
+    return `<tr ${rowStyle}><td><strong>${getPatientName(o.patid)}</strong>${incompleteWarn}<br><span class="text-muted">${o.patid}</span></td><td>${lmp?fmtDate(lmp):'—'}</td><td>${edd?fmtDate(edd):'—'}</td><td><span class="chip">${ga}</span></td><td><span class="badge badge-${o.outcome==='Ongoing Pregnancy'?'ongoing-preg':o.outcome?.includes('Delivery')?'completed':o.outcome?.includes('Miscarriage')||o.outcome==='IUFD'?'cancelled':'planned'}">${o.outcome||'—'}</span></td><td>${fmtDate(o.delivdate)||'—'}</td><td>${o.sex||'—'}</td><td>${o.bwt||'—'}</td><td>${o.complic||'—'}</td><td class="${bal>0?'text-red':''} fw600">${inr(bal)}</td><td>${renewal?fmtDate(renewal):'—'}</td><td>${o.lastentry?fmtDate(o.lastentry):'<span class="text-red">Never</span>'}</td><td>${o.followup?fmtDate(o.followup):'—'}</td><td><button class="btn btn-secondary btn-sm btn-icon" onclick="editObs('${o.id}')">✏️</button> <button class="btn btn-danger btn-sm btn-icon" onclick="delObs('${o.id}')">🗑</button></td></tr>`;
+  }).join('');
+}
+
+// ── RENDER DONORS
+function renderDonors(){
+  const q=(document.getElementById('donorSearch')?.value||'').toLowerCase();
+  const sf=document.getElementById('donorStatusFilter')?.value||'';
+  const rows=DB.donors.filter(d=>(!q||d.name?.toLowerCase().includes(q)||String(d.id||'').includes(q))&&(!sf||d.status===sf));
+  const tbody=document.querySelector('#donorTable tbody');
+  if(!rows.length){ tbody.innerHTML=`<tr><td colspan="20" class="tbl-empty">No donors yet.</td></tr>`; return; }
+  tbody.innerHTML=rows.map(d=>{
+    const concPat=(pid)=>{ if(!pid) return '—'; const nm=getPatientName(pid); const conc=DB.cycles.some(c=>String(c.patid)===String(pid)&&c.betaresult==='Positive'); return nm+(conc?` <span class="badge badge-positive">Positive</span>`:''); };
+    return `<tr><td class="fw600 text-teal">${d.id||'—'}</td><td><strong>${d.name||'—'}</strong></td><td>${d.bg||'—'}</td><td>${d.age||'—'}</td><td>${d.agent||'—'}</td><td>${fmtDate(d.opudate)}</td><td>${d.oocytes||'—'}</td><td>${d.m2||'—'}</td><td>${inr(d.payment)}</td><td>${d.paymethod||'—'}</td><td>${d.injby||'—'}</td><td>${d.pat1?getPatientName(d.pat1)+'<br><span class="text-muted">'+d.pat1+'</span>':'—'}</td><td>${concPat(d.pat1)}</td><td>${d.pat2?getPatientName(d.pat2)+'<br><span class="text-muted">'+d.pat2+'</span>':'—'}</td><td>${concPat(d.pat2)}</td><td>${d.pat3?getPatientName(d.pat3)+'<br><span class="text-muted">'+d.pat3+'</span>':'—'}</td><td>${concPat(d.pat3)}</td><td><span class="badge badge-${d.status==='Available'?'planned':d.status==='Allotted'?'ongoing':'completed'}">${d.status||'—'}</span></td><td>${d.notes||'—'}</td><td><button class="btn btn-secondary btn-sm btn-icon" onclick="editDonor('${d.id}')">✏️</button> <button class="btn btn-danger btn-sm btn-icon" onclick="delDonor('${d.id}')">🗑</button></td></tr>`;
+  }).join('');
+}
+function dnPatFill(n){
+  const pid=document.getElementById('dn_pat'+n).value.trim();
+  document.getElementById('dn_pat'+n+'name').value=getPatientName(pid);
+  const conc=DB.cycles.some(c=>String(c.patid)===String(pid)&&c.betaresult==='Positive');
+  document.getElementById('dn_pat'+n+'conceived').value=pid?(conc?'Yes — Positive β-hCG':'Not yet / Unknown'):'';
+}
+function saveDonor(){
+  const id=document.getElementById('dn_id').value.trim();
+  const name=document.getElementById('dn_name').value.trim();
+  if(!name){ toast('Donor name required','error'); return; }
+  const rec={
+    id:document.getElementById('dn_editId').value||id||uid(),
+    name,bg:document.getElementById('dn_bg').value,
+    age:document.getElementById('dn_age').value,
+    agent:document.getElementById('dn_agent').value,
+    opudate:document.getElementById('dn_opudate').value,
+    totaldose:document.getElementById('dn_totaldose').value,
+    oocytes:document.getElementById('dn_oocytes').value,
+    m2:document.getElementById('dn_m2').value,
+    payment:document.getElementById('dn_payment').value,
+    paymethod:document.getElementById('dn_paymethod').value,
+    injby:document.getElementById('dn_injby').value,
+    status:document.getElementById('dn_status').value,
+    pat1:document.getElementById('dn_pat1').value,
+    pat2:document.getElementById('dn_pat2').value,
+    pat3:document.getElementById('dn_pat3').value,
+    notes:document.getElementById('dn_notes').value,
+  };
+  const idx=DB.donors.findIndex(d=>d.id===rec.id);
+  if(idx>=0){ DB.donors[idx]=rec; toast('Donor updated','success'); }
+  else{ DB.donors.push(rec); toast('Donor saved','success'); }
+  save('donors'); closeModal('modalDonor'); renderAll();
+}
+function editDonor(id){
+  const d=DB.donors.find(x=>x.id===id); if(!d) return;
+  ['id','name','bg','age','agent','opudate','totaldose','oocytes','m2','payment','paymethod','injby','status','pat1','pat2','pat3','notes'].forEach(k=>{ const el=document.getElementById('dn_'+k); if(el) el.value=d[k]||''; });
+  document.getElementById('dn_editId').value=d.id;
+  [1,2,3].forEach(n=>dnPatFill(n));
+  openModal('modalDonor','Edit Donor',true);
+}
+function delDonor(id){ if(!confirm('Delete donor?')) return; DB.donors=DB.donors.filter(d=>d.id!==id); save('donors'); renderAll(); toast('Deleted','error'); }
+
+// ── RENDER IMAGE SERVER
+function renderImgServer(){
+  const tbody=document.querySelector('#imgStorageTable tbody');
+  if(!tbody) return;
+  const rows=[];
+  DB.embryo.forEach(e=>{
+    const nm=getPatientName(e.patid);
+    if(e.oocimg) rows.push({patid:e.patid,name:nm,type:'Oocyte',path:e.oocimg});
+    if(e.embimg) rows.push({patid:e.patid,name:nm,type:'Embryo',path:e.embimg});
+  });
+  if(!rows.length){ tbody.innerHTML=`<tr><td colspan="4" class="tbl-empty">No image paths saved in Embryo Storage yet.</td></tr>`; return; }
+  tbody.innerHTML=rows.map(r=>`<tr><td><strong>${r.name}</strong> <span class="text-muted">${r.patid}</span></td><td><span class="chip">${r.type}</span></td><td style="font-family:var(--mono);font-size:.75rem">${r.path}</td><td><button class="btn btn-secondary btn-sm" onclick="viewPathImage('${r.path.replace(/'/g,"\'")}')">View</button></td></tr>`).join('');
+}
+function openImgViewer(path){
+  if(!path) return;
+  // Try local server base first
+  const base=localStorage.getItem('cc_imgbase')||'';
+  const fname=path.split(/[\/\\]/).pop();
+  // Open in new tab — try server URL first, then file:// fallback
+  if(base){
+    const url=base.replace(/\/$/,'')+'/'+fname;
+    window.open(url,'_blank');
+    return;
+  }
+  // file:// direct (works in some browsers with correct security settings)
+  let url=path.replace(/\\/g,'/');
+  if(!url.startsWith('file://')) url='file:///'+url.replace(/^\/+/,'');
+  window.open(url,'_blank');
+}
+function viewLocalImage(){
+  const path=document.getElementById('imgPathInput').value.trim();
+  if(!path){ toast('Enter a file path','error'); return; }
+  viewPathImage(path);
+}
+function viewPathImage(path){
+  // Convert Windows path to file:// URL
+  let url=path.replace(/\\/g,'/');
+  if(!url.startsWith('file://') && !url.startsWith('http')) url='file:///'+url.replace(/^\/+/,'');
+  const img=document.getElementById('imgPreview');
+  const area=document.getElementById('imgPreviewArea');
+  const label=document.getElementById('imgPreviewLabel');
+  img.src=url;
+  img.onerror=()=>{ toast('Cannot load image — browser security may block local file:// paths. Use Browse Files instead.','error'); area.style.display='none'; };
+  img.onload=()=>{ area.style.display='block'; label.textContent=path; };
+  area.style.display='block'; label.textContent='Loading: '+path;
+}
+function viewFileInput(input){
+  if(!input.files[0]) return;
+  const url=URL.createObjectURL(input.files[0]);
+  const img=document.getElementById('imgPreview');
+  const area=document.getElementById('imgPreviewArea');
+  const label=document.getElementById('imgPreviewLabel');
+  img.src=url; area.style.display='block'; label.textContent=input.files[0].name;
+}
+
+// ── RENDER REPORTS
+function renderReports(){
+  const mo=+document.getElementById('rptMonth')?.value||new Date().getMonth()+1;
+  const yr=+document.getElementById('rptYear')?.value||new Date().getFullYear();
+  const isInMonth=(d)=>{ if(!d) return false; const dt=new Date(d+'T00:00:00'); return dt.getFullYear()===yr&&dt.getMonth()+1===mo; };
+
+  const stimThisMo=DB.cycles.filter(c=>isInMonth(c.stimdate)&&c.cancelled!=='Y').length;
+  const etThisMo=DB.cycles.filter(c=>isInMonth(c.etdate)&&c.cancelled!=='Y').length;
+  const completedMo=DB.cycles.filter(c=>isInMonth(c.etdate)&&cycleStatus(c)==='Completed').length;
+  const cancelledMo=DB.cycles.filter(c=>isInMonth(c.stimdate)&&c.cancelled==='Y').length;
+  const positiveMo=DB.cycles.filter(c=>isInMonth(c.betadate)&&c.betaresult==='Positive').length;
+  const delivMo=DB.obstetric.filter(o=>isInMonth(o.delivdate)&&o.outcome?.includes('Delivery')).length;
+  const ongoingPreg=DB.obstetric.filter(o=>o.outcome==='Ongoing Pregnancy').length;
+  const revenue=DB.payments.filter(p=>isInMonth(p.date)).reduce((s,p)=>s+(+p.amount||0),0);
+  const concRate=etThisMo>0?Math.round(positiveMo/etThisMo*100):0;
+  const storDue=DB.embryo.filter(e=>{ if(!e.renewal) return false; return diffDays(todayStr(),e.renewal)<=30; }).length;
+
+  const kpis=[
+    {label:'Stim Cycles (Month)',value:stimThisMo,color:'stim'},
+    {label:'Transfers Done (Month)',value:etThisMo,color:'etprep'},
+    {label:'Completed',value:completedMo,color:'sage'},
+    {label:'Cancelled',value:cancelledMo,color:'rose'},
+    {label:'Positive β-hCG',value:positiveMo,color:'sage'},
+    {label:'Conception Rate',value:concRate+'%',color:'etprep'},
+    {label:'Ongoing Pregnancies',value:ongoingPreg,color:'sage'},
+    {label:'Deliveries (Month)',value:delivMo,color:'teal'},
+    {label:'Revenue (Month)',value:inr(revenue),color:'teal'},
+    {label:'Storage Renewals ≤30d',value:storDue,color:'stim'},
+    {label:'Total Patients',value:DB.patients.length,color:'teal2'},
+    {label:'Total Cycles (all)',value:DB.cycles.length,color:'teal2'},
+  ];
+  document.getElementById('reportGrid').innerHTML=kpis.map(k=>`<div style="background:var(--white);border-radius:var(--radius);box-shadow:var(--shadow);padding:16px 18px;border-top:3px solid var(--${k.color},var(--teal))"><div style="font-size:1.6rem;font-weight:700;color:var(--${k.color},var(--teal));line-height:1.1">${k.value}</div><div style="font-size:.72rem;font-weight:600;text-transform:uppercase;letter-spacing:.4px;color:var(--ink4);margin-top:4px">${k.label}</div></div>`).join('');
+
+  const MONTHS=['January','February','March','April','May','June','July','August','September','October','November','December'];
+  const ytdbody=document.querySelector('#ytdTable tbody');
+  ytdbody.innerHTML=MONTHS.map((mn,mi)=>{
+    const m=mi+1;
+    const isM=(d)=>{ if(!d) return false; const dt=new Date(d+'T00:00:00'); return dt.getFullYear()===yr&&dt.getMonth()+1===m; };
+    const sc=DB.cycles.filter(c=>isM(c.stimdate)&&c.cancelled!=='Y').length;
+    const et=DB.cycles.filter(c=>isM(c.etdate)&&c.cancelled!=='Y').length;
+    const co=DB.cycles.filter(c=>isM(c.etdate)&&cycleStatus(c)==='Completed').length;
+    const ca=DB.cycles.filter(c=>isM(c.stimdate)&&c.cancelled==='Y').length;
+    const pb=DB.cycles.filter(c=>isM(c.betadate)&&c.betaresult==='Positive').length;
+    const dl=DB.obstetric.filter(o=>isM(o.delivdate)&&o.outcome?.includes('Delivery')).length;
+    const rv=DB.payments.filter(p=>isM(p.date)).reduce((s,p)=>s+(+p.amount||0),0);
+    const cl=DB.payments.filter(p=>isM(p.date)&&p.cleared==='Yes').reduce((s,p)=>s+(+p.amount||0),0);
+    const cur=m===mo&&yr===new Date().getFullYear();
+    return `<tr style="${cur?'background:var(--teal4);font-weight:600':''}"><td>${mn}</td><td>${sc||'—'}</td><td>${et||'—'}</td><td>${co||'—'}</td><td>${ca||'—'}</td><td>${pb||'—'}</td><td>${dl||'—'}</td><td>${rv?inr(rv):'—'}</td><td>${cl?inr(cl):'—'}</td></tr>`;
+  }).join('');
+}
+
+// ════════════════ EXPORT FUNCTIONS ════════════════════════════════
+function toCSVRow(arr){ return arr.map(v=>{ const s=String(v??''); return s.includes(',')||s.includes('"')||s.includes('\n')?`"${s.replace(/"/g,'""')}"`:s; }).join(','); }
+
+function exportCSV(store){
+  const HEADERS={
+    patients:['ID','Name','Mobile','Blood Grp F','Blood Grp M','Notes','Reg Date','Semen Freezing','Last Visit','Next Visit'],
+    cycles:['PatID','Name','Cycle','Attempt','Type','Protocol','Inj Brand','Daily Dose','Total Dose','Stim Date','Stim Time','OPU Date','OPU Time','Oocytes','MII','Created','Frozen','ET Prep','ET Date','ET Time','Transferred','Before','Remaining','LMP','Beta Date','Beta Result','Clin Rmk','Complic','Package','Cancelled','Status','Notes','Last Visit','Next Visit'],
+    payments:['PatID','Name','Date','Receipt','Package','Amount Paid','Balance Due','Method','Ref','Category','Remarks','Cleared'],
+    embryo:['PatID','Name','Total','Grade','Start Date','Renewal','Annual Fee','Fee Paid','Fee Due','Status','Vial','Discarded','Discard Date','Remaining','Oocyte Img','Embryo Img','Remarks'],
+    obstetric:['PatID','Name','LMP','EDD','GA','Outcome','Delivery Date','Sex','Birth Wt','Complic','Balance','Storage Renewal','Last Entry','Follow-up','Remarks'],
+  };
+  const ROWS={
+    patients: DB.patients.map(p=>[p.id,p.name,p.mobile||'',p.bgf||'',p.bgm||'',p.notes||'',p.regdate||'',p.semen_freezing||'No',p.lastvisit||'',p.nextvisit||'']),
+    donors: DB.donors.map(d=>[d.id||'',d.name||'',d.bg||'',d.age||'',d.agent||'',d.opudate||'',d.oocytes||'',d.m2||'',d.payment||'',d.paymethod||'',d.injby||'',d.pat1||'',d.pat2||'',d.pat3||'',d.status||'',d.notes||'']),
+    cycles: DB.cycles.map(c=>[c.patid,getPatientName(c.patid),c.cycno,c.attempt,c.type||'',c.protocol||'',c.injbrand||'',c.dailydose||'',c.totaldose||'',c.stimdate||'',c.stimtime||'',c.opudate||'',c.oputime||'',c.oocytes||'',c.mii||'',c.created||'',c.frozen||'',c.etprepdate||'',c.etdate||'',c.ettime||'',c.transferred||'',c.before||'',c.remaining||'',c.lmp||'',c.betadate||'',c.betaresult||'',c.clinrmk||'',c.complic||'',c.package||'',c.cancelled||'N',cycleStatus(c),c.notes||'',c.lastvisit||'',c.nextvisit||'']),
+    payments: DB.payments.map(p=>[p.patid,getPatientName(p.patid),p.date||'',p.receipt||'',p.package||'',p.amount||'',getBalance(p.patid)||0,p.method||'',p.ref||'',p.category||'',p.remarks||'',p.cleared||'']),
+    embryo: DB.embryo.map(e=>[e.patid,getPatientName(e.patid),e.total||'',e.grade||'',e.startdate||'',e.renewal||'',e.fee||'',e.feepaid||'',((+e.fee||0)-(+e.feepaid||0))||'',e.status||'',e.vial||'',e.discarded||0,e.discarddate||'',e.remaining||'',e.oocimg||'',e.embimg||'',e.remarks||'']),
+    obstetric: DB.obstetric.map(o=>{ const lmp=getLMP(o.patid); return [o.patid,getPatientName(o.patid),lmp||'',lmp?getEDD(lmp):'',lmp?getGA(lmp):'',o.outcome||'',o.delivdate||'',o.sex||'',o.bwt||'',o.complic||'',getBalance(o.patid)||'',getStorageRenewal(o.patid)||'',o.lastentry||'',o.followup||'',o.remarks||'']; }),
+  };
+  const h=HEADERS[store]; const r=ROWS[store];
+  const csv=[toCSVRow(h),...r.map(toCSVRow)].join('\n');
+  const a=document.createElement('a'); a.href='data:text/csv;charset=utf-8,\uFEFF'+encodeURIComponent(csv); a.download=`CareCure_IVF_${store}_${todayStr()}.csv`; a.click();
+  toast('CSV exported','success');
+}
+
+function exportExcel(store){
+  // Build a simple HTML table and download as .xls (opens in Excel)
+  const HEADERS={
+    patients:['ID','Name','Mobile','Blood Grp F','Blood Grp M','Notes','Reg Date','Semen Freezing','Last Visit','Next Visit'],
+    cycles:['PatID','Name','Cycle','Attempt','Type','Protocol','Inj Brand','Stim Date','Stim Time','OPU Date','OPU Time','Oocytes','MII','Created','Frozen','ET Prep','ET Date','ET Time','Transferred','Before','Remaining','LMP','Beta Date','Beta Result','Clin Rmk','Package ₹','Balance ₹','Status','Cancelled','Last Visit','Next Visit'],
+    payments:['PatID','Name','Date','Receipt','Package ₹','Amount Paid ₹','Balance Due ₹','Method','Category','Cleared'],
+    embryo:['PatID','Name','Total','Grade','Start Date','Renewal','Fee ₹','Fee Paid ₹','Fee Due ₹','Status','Vial','Discarded','Remaining'],
+    obstetric:['PatID','Name','LMP','EDD','GA','Outcome','Delivery Date','Sex','Complic','Balance ₹','Last Entry','Follow-up'],
+    donors:['Donor ID','Name','Blood Group','Age','Agent','OPU Date','Oocytes','M2','Payment ₹','Method','Inj By','Patient 1','Patient 2','Patient 3','Status','Notes'],
+    tracker:['ID','Name','Cycle','Attempt','Stim Start','OPU Date','OPU Time','ET Prep','Transfer Date','Transfer Time','Type','Status','Cancelled'],
+  };
+  const getData=(s)=>{
+    if(s==='donors') return DB.donors.map(d=>[d.id||'',d.name||'',d.bg||'',d.age||'',d.agent||'',d.opudate||'',d.oocytes||'',d.m2||'',d.payment||'',d.paymethod||'',d.injby||'',d.pat1||'',d.pat2||'',d.pat3||'',d.status||'',d.notes||'']);
+    if(s==='tracker') return DB.cycles.map(c=>[c.patid,getPatientName(c.patid),c.cycno,c.attempt,c.stimdate||'',c.opudate||'',c.oputime||'',c.etprepdate||'',c.etdate||'',c.ettime||'',c.type||'',cycleStatus(c),c.cancelled||'N']);
+    if(s==='patients') return DB.patients.map(p=>[p.id,p.name,p.mobile||'',p.bgf||'',p.bgm||'',p.notes||'',p.regdate||'',p.semen_freezing||'No',p.lastvisit||'',p.nextvisit||'']);
+    if(s==='cycles') return DB.cycles.map(c=>[c.patid,getPatientName(c.patid),c.cycno,c.attempt,c.type||'',c.protocol||'',c.injbrand||'',c.stimdate||'',c.stimtime||'',c.opudate||'',c.oputime||'',c.oocytes||'',c.mii||'',c.created||'',c.frozen||'',c.etprepdate||'',c.etdate||'',c.ettime||'',c.transferred||'',c.before||'',c.remaining||'',c.lmp||'',c.betadate||'',c.betaresult||'',c.clinrmk||'',c.package||'',getBalance(c.patid),cycleStatus(c),c.cancelled||'N',c.lastvisit||'',c.nextvisit||'']);
+    if(s==='payments') return DB.payments.map(p=>[p.patid,getPatientName(p.patid),p.date||'',p.receipt||'',p.package||'',p.amount||'',getBalance(p.patid)||0,p.method||'',p.category||'',p.cleared||'']);
+    if(s==='embryo') return DB.embryo.map(e=>[e.patid,getPatientName(e.patid),e.total||'',e.grade||'',e.startdate||'',e.renewal||'',e.fee||'',e.feepaid||'',(+e.fee||0)-(+e.feepaid||0),e.status||'',e.vial||'',e.discarded||0,e.remaining||'']);
+    if(s==='obstetric') return DB.obstetric.map(o=>{ const lmp=getLMP(o.patid); return [o.patid,getPatientName(o.patid),lmp||'',lmp?getEDD(lmp):'',lmp?getGA(lmp):'',o.outcome||'',o.delivdate||'',o.sex||'',o.complic||'',getBalance(o.patid)||'',o.lastentry||'',o.followup||'']; });
+    return [];
+  };
+  const h=HEADERS[store]||HEADERS['patients']; const r=getData(store);
+  let html=`<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel"><head><meta charset="UTF-8"></head><body><table><tr>${h.map(c=>`<th style="background:#005f73;color:#fff;font-weight:bold">${c}</th>`).join('')}</tr>${r.map(row=>`<tr>${row.map(c=>`<td>${c??''}</td>`).join('')}</tr>`).join('')}</table></body></html>`;
+  const a=document.createElement('a'); a.href='data:application/vnd.ms-excel;charset=utf-8,'+encodeURIComponent(html); a.download=`CareCure_IVF_${store}_${todayStr()}.xls`; a.click();
+  toast('Excel file exported','success');
+}
+
+function exportGoogleSheets(store){
+  exportCSV(store);
+  setTimeout(()=>{ toast('CSV downloaded — go to sheets.new → File → Import → Upload this CSV','info'); },600);
+}
+
+function exportReportCSV(){
+  const mo=+document.getElementById('rptMonth')?.value||new Date().getMonth()+1;
+  const yr=+document.getElementById('rptYear')?.value||new Date().getFullYear();
+  const MONTHS=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  let csv='Month,Stim Cycles,Transfers,Completed,Cancelled,Positive β-hCG,Deliveries,Revenue ₹,Collected ₹\n';
+  MONTHS.forEach((mn,mi)=>{
+    const m=mi+1;
+    const isM=(d)=>{ if(!d) return false; const dt=new Date(d+'T00:00:00'); return dt.getFullYear()===yr&&dt.getMonth()+1===m; };
+    const sc=DB.cycles.filter(c=>isM(c.stimdate)&&c.cancelled!=='Y').length;
+    const et=DB.cycles.filter(c=>isM(c.etdate)&&c.cancelled!=='Y').length;
+    const co=DB.cycles.filter(c=>isM(c.etdate)&&cycleStatus(c)==='Completed').length;
+    const ca=DB.cycles.filter(c=>isM(c.stimdate)&&c.cancelled==='Y').length;
+    const pb=DB.cycles.filter(c=>isM(c.betadate)&&c.betaresult==='Positive').length;
+    const dl=DB.obstetric.filter(o=>isM(o.delivdate)&&o.outcome?.includes('Delivery')).length;
+    const rv=DB.payments.filter(p=>isM(p.date)).reduce((s,p)=>s+(+p.amount||0),0);
+    const cl=DB.payments.filter(p=>isM(p.date)&&p.cleared==='Yes').reduce((s,p)=>s+(+p.amount||0),0);
+    csv+=`${mn} ${yr},${sc},${et},${co},${ca},${pb},${dl},${rv},${cl}\n`;
+  });
+  const a=document.createElement('a'); a.href='data:text/csv;charset=utf-8,\uFEFF'+encodeURIComponent(csv); a.download=`CareCure_IVF_Report_${yr}.csv`; a.click();
+  toast('Report exported','success');
+}
+
+// ── RENDER EXPENSES — reads from DB.bills (the actual save target)
+function toggleItemBreakdown(){
+  const body=document.getElementById('itemBreakdownBody');
+  const tog=document.getElementById('itemBreakdownToggle');
+  if(!body) return;
+  const open=body.style.display!=='none';
+  body.style.display=open?'none':'block';
+  if(tog) tog.textContent=open?'▼ Show':'▲ Hide';
+}
+
+function renderExpenses(){
+  const mo=+(document.getElementById('expMonth')||{}).value||(new Date().getMonth()+1);
+  const yr=+(document.getElementById('expYear')||{}).value||new Date().getFullYear();
+  const isM=(d)=>{ if(!d) return false; const dt=new Date(d+'T00:00:00'); return dt.getFullYear()===yr&&dt.getMonth()+1===mo; };
+  const bills=(DB.bills||[]).filter(b=>isM(b.date));
+  const tbody=document.querySelector('#expTable tbody');
+  if(!tbody) return;
+
+  // Summary totals
+  let totalGrand=0,totalTax=0,totalPaid=0;
+  bills.forEach(b=>{
+    totalGrand+=(+b.grandtotal||0);
+    totalPaid+=(+b.paidamt||0);
+    (Array.isArray(b.items) ? b.items : []).forEach(i=>{ totalTax+=(+i.taxamt||0); });
+  });
+  const setEl=(id,v)=>{ const el=document.getElementById(id); if(el) el.textContent=inr(v); };
+  setEl('expTotal',totalGrand); setEl('expTax',totalTax);
+  setEl('expPaid',totalPaid); setEl('expDue',totalGrand-totalPaid);
+
+  // Category + item breakdown
+  const catMap={},itemMap={};
+  bills.forEach(b=>{
+    (Array.isArray(b.items) ? b.items : []).forEach(i=>{
+      const cat=i.itemgroup||'General';
+      const tot=+i.total||0;
+      catMap[cat]=(catMap[cat]||0)+tot;
+      const key=i.itemname||'—';
+      if(!itemMap[key]) itemMap[key]={qty:0,total:0};
+      itemMap[key].qty+=(+i.qty||0);
+      itemMap[key].total+=tot;
+    });
+  });
+  const catBody=document.getElementById('catBreakBody');
+  if(catBody){
+    const arr=Object.entries(catMap).sort((a,b)=>b[1]-a[1]);
+    catBody.innerHTML=arr.length
+      ? arr.map(([cat,amt])=>`<tr style="border-bottom:1px solid #edf2f7"><td style="padding:8px 14px"><span class="chip">${cat}</span></td><td style="padding:8px 14px;text-align:right;font-weight:600;color:var(--teal)">${inr(amt)}</td><td style="padding:8px 14px;text-align:right;color:var(--ink4)">${totalGrand>0?((amt/totalGrand)*100).toFixed(1):0}%</td></tr>`).join('')
+        +`<tr style="background:#f0fafb;font-weight:700"><td style="padding:8px 14px">Total</td><td style="padding:8px 14px;text-align:right;color:var(--teal)">${inr(totalGrand)}</td><td style="padding:8px 14px;text-align:right">100%</td></tr>`
+      : `<tr><td colspan="3" class="tbl-empty">No data this month</td></tr>`;
+  }
+  const itemBody=document.getElementById('itemBreakBody');
+  if(itemBody){
+    const arr=Object.entries(itemMap).sort((a,b)=>b[1].total-a[1].total).slice(0,20);
+    itemBody.innerHTML=arr.length
+      ? arr.map(([name,d],i)=>`<tr style="border-bottom:1px solid #edf2f7;background:${i%2?'#f8fafb':'#fff'}"><td style="padding:7px 14px;font-weight:${i<3?'700':'400'}">${i<3?'🔹 ':''}${name}</td><td style="padding:7px 14px;text-align:center;color:var(--ink4)">${d.qty}</td><td style="padding:7px 14px;text-align:right;font-weight:600;color:var(--teal)">${inr(d.total)}</td></tr>`).join('')
+      : `<tr><td colspan="3" class="tbl-empty">No data</td></tr>`;
+  }
+
+  // Bills table
+  if(!bills.length){ tbody.innerHTML=`<tr><td colspan="11" class="tbl-empty">No bills recorded this month. Click "+ Add Bill" to start.</td></tr>`; return; }
+  tbody.innerHTML=bills.slice().sort((a,b)=>(b.date||'').localeCompare(a.date||'')).map(b=>{
+    const ic=(Array.isArray(b.items) ? b.items : []).length;
+    const preview=(Array.isArray(b.items) ? b.items : []).slice(0,2).map(i=>i.itemname).join(', ')+(ic>2?` +${ic-2} more`:'');
+    const sub=(Array.isArray(b.items) ? b.items : []).reduce((s,i)=>s+(+i.qty||0)*(+i.rate||0),0);
+    const tax=(Array.isArray(b.items) ? b.items : []).reduce((s,i)=>s+(+i.taxamt||0),0);
+    const due=(+b.grandtotal||0)-(+b.paidamt||0);
+    return `<tr>
+      <td>${fmtDate(b.date)}</td>
+      <td><strong>${b.vendor||'—'}</strong></td>
+      <td style="font-size:.75rem;color:var(--ink4)">${b.invoiceno||'—'}</td>
+      <td><span class="chip" style="cursor:pointer" onclick="toggleBillItems('${b.id}')" title="Click to toggle items">${ic} item${ic!==1?'s':''} ▾</span><br><span style="font-size:.7rem;color:var(--ink4)">${preview}</span></td>
+      <td>${inr(sub.toFixed(2))}</td>
+      <td style="color:var(--amber)">${inr(tax.toFixed(2))}</td>
+      <td class="fw600">${inr(b.grandtotal)}</td>
+      <td style="color:var(--sage);font-weight:600">${inr(b.paidamt||0)}</td>
+      <td class="${due>0.01?'text-red':''} fw600">${inr(due.toFixed(2))}</td>
+      <td style="font-size:.75rem;color:var(--ink4)">${b.remarks||'—'}</td>
+      <td><button class="btn btn-secondary btn-sm btn-icon" onclick="editBill('${b.id}')">✏️</button> <button class="btn btn-danger btn-sm btn-icon" onclick="delBill('${b.id}')">🗑</button></td>
+    </tr>
+    <tr id="billDetail_${b.id}" style="display:none;background:#f0fafb">
+      <td colspan="11" style="padding:0 14px 12px 28px">
+        <div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--teal);padding:8px 0 6px">Line Items</div>
+        <table style="width:100%;border-collapse:collapse;font-size:.78rem">
+          <thead><tr style="background:var(--teal);color:#fff">
+            <th style="padding:5px 10px;text-align:left">Category</th><th style="padding:5px 10px;text-align:left">Item Name</th>
+            <th style="padding:5px 10px;text-align:center">Qty</th><th style="padding:5px 10px;text-align:right">Rate</th>
+            <th style="padding:5px 10px;text-align:center">Tax%</th><th style="padding:5px 10px;text-align:right">Tax Amt</th>
+            <th style="padding:5px 10px;text-align:right">Line Total</th>
+          </tr></thead>
+          <tbody>${(Array.isArray(b.items) ? b.items : []).map((it,idx)=>`<tr style="border-bottom:1px solid #e2e8f0;background:${idx%2?'#f8fafb':'#fff'}">
+            <td style="padding:5px 10px"><span class="chip">${it.itemgroup||'General'}</span></td>
+            <td style="padding:5px 10px;font-weight:600">${it.itemname||'—'}</td>
+            <td style="padding:5px 10px;text-align:center">${it.qty}</td>
+            <td style="padding:5px 10px;text-align:right">${inr(it.rate)}</td>
+            <td style="padding:5px 10px;text-align:center">${it.tax||0}%</td>
+            <td style="padding:5px 10px;text-align:right;color:var(--amber)">${inr(it.taxamt)}</td>
+            <td style="padding:5px 10px;text-align:right;font-weight:700;color:var(--teal)">${inr(it.total)}</td>
+          </tr>`).join('')}</tbody>
+        </table>
+      </td>
+    </tr>`;
+  }).join('');
+}
+
+// ════════════════ INIT ════════════════════════════════════════════
+function initClock(){
+  const now=new Date();
+  const h=now.getHours();
+  document.getElementById('greetTime').textContent=h<12?'morning':h<17?'afternoon':'evening';
+  document.getElementById('dashDate').textContent=now.toLocaleDateString('en-IN',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+  document.getElementById('topbarDate').textContent=now.toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'})+' '+now.toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'});
+  setTimeout(initClock,30000);
+}
+
+function initYears(){
+  const cur=new Date().getFullYear();
+  ['rptYear'].forEach(sid=>{
+    const sel=document.getElementById(sid);
+    if(!sel) return;
+    for(let y=cur;y>=cur-5;y--){ const o=document.createElement('option'); o.value=y; o.textContent=y; sel.appendChild(o); }
+    sel.value=cur;
+  });
+}
+
+function initScheduleDate(){
+  const el=document.getElementById('scheduleDate');
+  if(el) el.value=todayStr();
+}
+
+function initReportMonth(){
+  const el=document.getElementById('rptMonth');
+  if(el) el.value=new Date().getMonth()+1;
+}
+
+populateTimeSelects();
+initClock();
+initYears();
+initScheduleDate();
+initReportMonth();
+
+// ══════════════════════════════════════════════════════════════════
+// BACKUP & RESTORE
+// ══════════════════════════════════════════════════════════════════
+let _pendingRestoreData = null;
+
+function downloadBackup(){
+  const note = (document.getElementById('backupNote')||{}).value||'';
+  const backup = {
+    _meta: {
+      version: 2,
+      created: new Date().toISOString(),
+      note: note,
+      app: 'CareCure IVF'
+    }
+  };
+  const STORES = ['patients','cycles','payments','embryo','obstetric','expenses','donors','bills'];
+  STORES.forEach(k => { backup[k] = DB[k] || []; });
+
+  const json = JSON.stringify(backup, null, 2);
+  const blob = new Blob([json], {type:'application/json'});
+  const url = URL.createObjectURL(blob);
+  const ts = new Date().toISOString().slice(0,10);
+  const a = document.createElement('a');
+  a.href = url; a.download = 'CareCure_Backup_'+ts+'.json'; a.click();
+  setTimeout(()=>URL.revokeObjectURL(url), 2000);
+
+  // Save to history in localStorage
+  try {
+    const hist = JSON.parse(localStorage.getItem('cc_backup_hist')||'[]');
+    hist.unshift({ ts: new Date().toISOString(), note: note||'Manual backup',
+      counts: Object.fromEntries(STORES.map(k=>[k,(DB[k]||[]).length])) });
+    localStorage.setItem('cc_backup_hist', JSON.stringify(hist.slice(0,10)));
+  } catch(e){}
+
+  // Show stats
+  const statsEl = document.getElementById('backupStats');
+  if(statsEl){
+    const STORES2 = ['patients','cycles','payments','embryo','obstetric','bills','donors'];
+    statsEl.innerHTML = '<strong>Backed up:</strong> '
+      + STORES2.map(k=>`${k.charAt(0).toUpperCase()+k.slice(1)}: <strong>${(DB[k]||[]).length}</strong>`).join(' &nbsp;|&nbsp; ');
+  }
+  renderBackupHistory();
+  toast('Backup downloaded successfully','success');
+}
+
+function handleRestoreFile(file){
+  if(!file) return;
+  if(!file.name.endsWith('.json')){ toast('Please select a .json backup file','error'); return; }
+  const reader = new FileReader();
+  reader.onload = function(e){
+    try {
+      const data = JSON.parse(e.target.result);
+      if(!data._meta && !data.patients){ toast('Invalid backup file format','error'); return; }
+      _pendingRestoreData = data;
+      const meta = data._meta || {};
+      const STORES2 = ['patients','cycles','payments','embryo','obstetric','bills','donors'];
+      const preview = document.getElementById('restorePreview');
+      const btn = document.getElementById('restoreConfirmBtn');
+      if(preview){
+        preview.style.display='block';
+        preview.innerHTML = '<strong>&#128196; Backup File: '+file.name+'</strong><br>'
+          + (meta.created ? 'Created: '+new Date(meta.created).toLocaleString('en-IN')+'<br>' : '')
+          + (meta.note ? 'Note: <em>'+meta.note+'</em><br>' : '')
+          + '<br><strong>Records in backup:</strong><br>'
+          + STORES2.map(k=>`${k.charAt(0).toUpperCase()+k.slice(1)}: <strong>${(data[k]||[]).length}</strong>`).join(' &nbsp;&nbsp; ');
+      }
+      if(btn) btn.style.display='block';
+      toast('Backup file loaded — review details and confirm','info');
+    } catch(err){
+      toast('Could not read backup file: '+err.message,'error');
+    }
+  };
+  reader.readAsText(file);
+}
+
+function confirmRestore(){
+  if(!_pendingRestoreData){ toast('No backup loaded','error'); return; }
+  if(!confirm('This will REPLACE ALL current data with the backup. Are you sure?')) return;
+  const STORES = ['patients','cycles','payments','embryo','obstetric','expenses','donors','bills'];
+  STORES.forEach(k => { DB[k] = _pendingRestoreData[k] || []; });
+  normalizeAllDates();
+  _pendingRestoreData = null;
+  const preview = document.getElementById('restorePreview');
+  const btn = document.getElementById('restoreConfirmBtn');
+  if(preview){ preview.style.display='none'; preview.innerHTML=''; }
+  if(btn) btn.style.display='none';
+  const fi = document.getElementById('restoreFileInput');
+  if(fi) fi.value='';
+  renderAll();
+  toast('Data restored successfully from backup!','success');
+}
+
+function renderBackupHistory(){
+  const el = document.getElementById('backupHistoryList');
+  if(!el) return;
+  try {
+    const hist = JSON.parse(localStorage.getItem('cc_backup_hist')||'[]');
+    if(!hist.length){ el.innerHTML='<p style="font-size:.82rem;color:var(--ink4);padding:4px 0">No backup history yet. Download your first backup above.</p>'; return; }
+    el.innerHTML = '<table style="width:100%;border-collapse:collapse;font-size:.82rem">'
+      + '<thead><tr style="background:#f0fafb"><th style="padding:8px 12px;text-align:left;font-size:.72rem;color:var(--ink3)">Date &amp; Time</th><th style="padding:8px 12px;text-align:left;font-size:.72rem;color:var(--ink3)">Note</th><th style="padding:8px 12px;text-align:left;font-size:.72rem;color:var(--ink3)">Record Counts</th></tr></thead>'
+      + '<tbody>'
+      + hist.map(h=>`<tr style="border-bottom:1px solid #edf2f7"><td style="padding:8px 12px;font-weight:600">${new Date(h.ts).toLocaleString('en-IN')}</td><td style="padding:8px 12px;color:var(--ink3)">${h.note||'—'}</td><td style="padding:8px 12px;font-size:.75rem;color:var(--ink4)">${Object.entries(h.counts||{}).map(([k,v])=>k+': '+v).join(', ')}</td></tr>`).join('')
+      + '</tbody></table>';
+  } catch(e){ el.innerHTML='<p style="font-size:.82rem;color:var(--ink4)">Could not load history.</p>'; }
+}
+
+function clearBackupHistory(){
+  if(!confirm('Clear backup history from this browser?')) return;
+  try { localStorage.removeItem('cc_backup_hist'); } catch(e){}
+  renderBackupHistory();
+  toast('History cleared','info');
+}
+
+loadAllFromSheets();
+</script>
+
+<!-- ═══════════════════════════════════ BACKUP & RESTORE ═══ -->
+<div class="page" id="page-backup">
+  <div class="page-hdr"><h2>&#128190; Backup &amp; Restore</h2></div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;max-width:960px">
+
+    <!-- BACKUP -->
+    <div style="background:var(--white);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden">
+      <div style="background:var(--teal);color:#fff;padding:14px 18px;font-weight:600;font-size:.85rem;letter-spacing:.4px">
+        &#11015; Download Backup
+      </div>
+      <div style="padding:20px">
+        <p style="font-size:.82rem;color:var(--ink3);margin-bottom:14px;line-height:1.6">
+          Saves <strong>all data</strong> (patients, cycles, payments, embryo storage, obstetric, expenses, egg donors) as a single <code>.json</code> file to your computer.
+          Store it safely — use it to restore anytime.
+        </p>
+        <div style="background:var(--teal4);border-radius:8px;padding:12px 14px;margin-bottom:16px;font-size:.78rem;color:var(--teal)">
+          <strong>&#128197; Tip:</strong> Take a backup at the end of each day or before making big changes.
+        </div>
+        <div style="margin-bottom:12px">
+          <label style="font-size:.75rem;font-weight:600;color:var(--ink3);letter-spacing:.3px;text-transform:uppercase;display:block;margin-bottom:5px">Backup Note (optional)</label>
+          <input id="backupNote" placeholder="e.g. End of day 4 Apr 2026" style="width:100%;border:1.5px solid #e2e8f0;border-radius:7px;padding:8px 10px;font-family:var(--font);font-size:.85rem;outline:none">
+        </div>
+        <button class="btn btn-primary" style="width:100%" onclick="downloadBackup()">&#11015; Download Backup File</button>
+        <div id="backupStats" style="margin-top:14px;font-size:.78rem;color:var(--ink4);line-height:1.8"></div>
+      </div>
+    </div>
+
+    <!-- RESTORE -->
+    <div style="background:var(--white);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden">
+      <div style="background:var(--amber);color:#fff;padding:14px 18px;font-weight:600;font-size:.85rem;letter-spacing:.4px">
+        &#11014; Restore from Backup
+      </div>
+      <div style="padding:20px">
+        <div style="background:#fff3cd;border:1px solid var(--amber2);border-radius:8px;padding:12px 14px;margin-bottom:14px;font-size:.78rem;color:#7a4100">
+          <strong>&#9888; Warning:</strong> Restoring will <strong>replace all current data</strong> with the backup file. This cannot be undone. Take a fresh backup first if needed.
+        </div>
+        <p style="font-size:.82rem;color:var(--ink3);margin-bottom:14px;line-height:1.6">
+          Select a <code>.json</code> backup file previously downloaded from this app.
+        </p>
+        <div id="restoreDropZone" style="border:2px dashed #e2e8f0;border-radius:8px;padding:28px;text-align:center;cursor:pointer;transition:border-color .15s;margin-bottom:12px"
+          onclick="document.getElementById('restoreFileInput').click()"
+          ondragover="event.preventDefault();this.style.borderColor='var(--teal)'"
+          ondragleave="this.style.borderColor='#e2e8f0'"
+          ondrop="event.preventDefault();this.style.borderColor='#e2e8f0';handleRestoreFile(event.dataTransfer.files[0])">
+          <div style="font-size:2rem;margin-bottom:8px">&#128196;</div>
+          <div style="font-size:.82rem;font-weight:600;color:var(--ink3)">Click or drag &amp; drop backup file here</div>
+          <div style="font-size:.72rem;color:var(--ink4);margin-top:4px">Accepts .json files only</div>
+        </div>
+        <input type="file" id="restoreFileInput" accept=".json" style="display:none" onchange="handleRestoreFile(this.files[0])">
+        <div id="restorePreview" style="display:none;background:#f0fafb;border-radius:8px;padding:14px;margin-bottom:12px;font-size:.82rem;color:var(--ink)"></div>
+        <button id="restoreConfirmBtn" class="btn btn-amber" style="width:100%;display:none" onclick="confirmRestore()">&#11014; Restore This Backup</button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Backup History (last 5 shown) -->
+  <div style="max-width:960px;margin-top:20px;background:var(--white);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden">
+    <div style="background:var(--ink2);color:#fff;padding:12px 18px;font-weight:600;font-size:.82rem;letter-spacing:.4px;display:flex;align-items:center;justify-content:space-between">
+      &#128203; Backup History (this browser)
+      <button onclick="clearBackupHistory()" style="background:none;border:1px solid rgba(255,255,255,0.3);color:rgba(255,255,255,0.7);padding:3px 10px;border-radius:5px;cursor:pointer;font-size:.72rem">Clear History</button>
+    </div>
+    <div id="backupHistoryList" style="padding:14px"></div>
+  </div>
+</div>
+
+</body>
+</html>
